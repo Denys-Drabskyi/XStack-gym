@@ -5,9 +5,8 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dao.TraineeDao;
 import org.example.dao.TrainingDao;
-import org.example.dto.TraineeDto;
 import org.example.entity.Trainee;
-import org.example.entity.User;
+import org.example.exception.EntityCreatingException;
 import org.example.exception.EntityNotFoundException;
 import org.example.mapper.TraineeMapper;
 import org.example.service.TraineeService;
@@ -28,31 +27,23 @@ public class TraineeServiceImpl implements TraineeService {
   private TraineeMapper traineeMapper;
 
   @Override
-  public TraineeDto getById(UUID id) {
-    Trainee trainee = traineeDao.get(id).orElseThrow(
-        () -> EntityNotFoundException.byId(id, Trainee.class.getSimpleName())
-    );
-    User user = userService.getExistingById(trainee.getUserId());
-    return traineeDtoFromUserAndTrainee(user, trainee);
+  public Optional<Trainee> getById(UUID id) {
+    return traineeDao.get(id);
+  }
+
+  @Override
+  public Trainee getExistingById(UUID id) {
+    return getById(id)
+        .orElseThrow(() -> EntityNotFoundException.byId(id, Trainee.class.getSimpleName()));
   }
 
   @Override
   public Trainee create(Trainee trainee) {
-    if (userService.getById(trainee.getUserId()).isEmpty()){
-      log.error("Impossible to create Trainee, user with id: {} does not exist", trainee.getUserId());
-      throw EntityNotFoundException.byId(trainee.getUserId(), User.class.getSimpleName());
+    if (userService.existsById(trainee.getId())){
+      throw EntityCreatingException.alreadyExists(trainee.getId(), Trainee.class.getSimpleName());
     }
+    userService.checkForUsernameAvailable(trainee);
     return traineeDao.save(trainee);
-  }
-
-  @Override
-  public TraineeDto create(TraineeDto traineeDto) {
-    User user = userService.getById(traineeDto.getUserId())
-        .orElseGet(() -> userService.create(traineeDto));
-
-    traineeDto.setUserId(user.getId());
-    Trainee trainee = traineeMapper.newTraineeFromDto(traineeDto);
-    return traineeDtoFromUserAndTrainee(user, trainee);
   }
 
   @Override
@@ -67,25 +58,11 @@ public class TraineeServiceImpl implements TraineeService {
   }
 
   @Override
-  public TraineeDto update(TraineeDto traineeDto) {
-    User storedUser = userService.update(traineeDto);
-    Trainee trainee = update(traineeMapper.newTraineeFromDto(traineeDto));
-    return traineeDtoFromUserAndTrainee(storedUser, trainee);
-  }
-
-  @Override
   public void deleteById(UUID id) {
     Optional<Trainee> trainee = traineeDao.get(id);
     if (trainee.isPresent()) {
       trainingDao.deleteUserTrainings(id);
       traineeDao.delete(id);
-      userService.deleteById(trainee.get().getUserId());
     }
-  }
-
-  private TraineeDto traineeDtoFromUserAndTrainee(User user, Trainee trainee) {
-    TraineeDto traineeDto = traineeMapper.fromUser(user);
-    traineeMapper.updateDtoFromEntity(trainee, traineeDto);
-    return traineeDto;
   }
 }

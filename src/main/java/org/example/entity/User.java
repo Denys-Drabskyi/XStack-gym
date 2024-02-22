@@ -4,12 +4,14 @@ import java.util.Objects;
 import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.example.exception.SuffixUpdateException;
 import org.example.util.PasswordGenerator;
 
 @Getter
+@ToString
 @EqualsAndHashCode
-public class User implements Entity<UUID> {
+public abstract class User implements Entity<UUID> {
   private final UUID id;
   private String firstName;
   private String lastName;

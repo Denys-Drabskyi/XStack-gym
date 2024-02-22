@@ -35,25 +35,24 @@ class GeneralStorageTest {
     when(daoFile.getTrainee()).thenReturn("");
     when(daoFile.getTraining()).thenReturn("");
     when(daoFile.getTrainer()).thenReturn("");
-    when(daoFile.getUser()).thenReturn("");
   }
 
 
   @Test
-  @DisplayName("postConstruct() tries to load 4 storages")
+  @DisplayName("postConstruct() tries to load 3 storages")
   @SneakyThrows
   void testCase01() {
     when(objectMapper.readValue((File) any(), (TypeReference<Object>) any())).thenReturn(null);
     storage.postConstruct();
-    verify(objectMapper, times(4)).readValue((File) any(), (TypeReference<Object>) any());
+    verify(objectMapper, times(3)).readValue((File) any(), (TypeReference<Object>) any());
   }
 
   @Test
-  @DisplayName("preDestroy() tries to write 4 storages")
+  @DisplayName("preDestroy() tries to write 3 storages")
   @SneakyThrows
   void testCase02() {
     doNothing().when(objectMapper).writeValue((File) any(), any());
     storage.preDestroy();
-    verify(objectMapper, times(4)).writeValue((File) any(), any());
+    verify(objectMapper, times(3)).writeValue((File) any(), any());
   }
 }

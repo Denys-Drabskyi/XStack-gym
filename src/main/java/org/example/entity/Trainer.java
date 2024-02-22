@@ -1,25 +1,26 @@
 package org.example.entity;
 
 import java.util.Objects;
-import java.util.UUID;
-import lombok.Data;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
-public class Trainer implements Entity<UUID> {
-  private final UUID id;
+@Getter
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class Trainer extends User {
   private TrainingType specialization;
-  private final UUID userId;
 
-  public Trainer(TrainingType specialization, UUID userId) {
+  @Builder
+  public Trainer(String firstName, String lastName, TrainingType specialization) {
+    super(firstName, lastName);
     Objects.requireNonNull(specialization, "specialization can not be null");
-    Objects.requireNonNull(userId, "userId date can not be null");
-    this.id = UUID.randomUUID();
     this.specialization = specialization;
-    this.userId = userId;
   }
 
-  @Override
-  public UUID getId() {
-    return this.id;
+  public void setSpecialization(TrainingType specialization) {
+    Objects.requireNonNull(specialization, "Specialization can not be null");
+    this.specialization = specialization;
   }
 }
