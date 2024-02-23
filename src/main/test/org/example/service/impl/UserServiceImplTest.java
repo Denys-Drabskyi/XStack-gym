@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 import org.example.dao.UserDao;
 import org.example.entity.Trainer;
-import org.example.entity.TrainingType;
 import org.example.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +26,8 @@ class UserServiceImplTest {
 
   @BeforeEach
   void setUp() {
-    user = new Trainer("test", "test", TrainingType.TYPE_1);
+    user = Trainer.builder().username("test.test").build();
+//        new Trainer("test", "test", TrainingType.TYPE_1);
   }
 
   @Test

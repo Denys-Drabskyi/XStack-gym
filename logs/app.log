@@ -1,20 +1,22 @@
-2024-02-22 03:15:24,920 INFO o.e.d.TrainingDao [main] Started user:bdb48c40-c082-4038-82fa-c81cd1fc4270 trainings delete
-2024-02-22 03:15:27,286 INFO o.e.s.i.TrainerServiceImpl [main] Updating saved trainee from dto
-2024-02-22 03:15:27,383 INFO o.e.d.BasicMapDao [main] Saving test with id: 1
-2024-02-22 03:15:27,387 INFO o.e.d.BasicMapDao [main] Getting test with id: 1
-2024-02-22 03:15:27,387 ERROR o.e.d.BasicMapDao [main] test with id: 1 does not exists
-2024-02-22 03:15:27,389 INFO o.e.d.BasicMapDao [main] Getting test with id: 1
-2024-02-22 03:15:27,392 INFO o.e.d.BasicMapDao [main] Started test with id: 1 delete
-2024-02-22 03:15:27,392 ERROR o.e.d.BasicMapDao [main] Storage has no test with id: 1
-2024-02-22 03:15:27,394 INFO o.e.d.BasicMapDao [main] Started test with id: 1 delete
-2024-02-22 03:15:27,413 INFO o.e.d.UserDao [main] Started looking for users with username:
-2024-02-22 03:15:27,417 INFO o.e.d.UserDao [main] Started looking for users with username:
-2024-02-22 03:15:27,418 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
-2024-02-22 03:15:27,419 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
-2024-02-22 03:15:27,420 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
-2024-02-22 03:15:27,421 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
-2024-02-22 03:15:27,422 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
-2024-02-22 03:15:27,424 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
-2024-02-22 03:15:27,504 INFO o.e.s.i.TraineeServiceImpl [main] Updating saved trainee from dto
-2024-02-22 03:15:27,543 INFO o.e.s.i.UserServiceImpl [main] Adding suffix to username:test.test, username with largest suffix found:test.test
-2024-02-22 03:15:27,543 INFO o.e.s.i.UserServiceImpl [main] New username:test.test1
+2024-02-23 02:14:22,595 INFO o.e.d.TrainingDao [main] Started user:bdb48c40-c082-4038-82fa-c81cd1fc4270 trainings delete
+2024-02-23 02:14:25,203 INFO o.e.s.i.TrainerServiceImpl [main] Checking if username:null.null is available
+2024-02-23 02:14:25,214 INFO o.e.s.i.TrainerServiceImpl [main] Updating saved trainer from dto
+2024-02-23 02:14:25,326 INFO o.e.d.BasicMapDao [main] Saving test with id: 1
+2024-02-23 02:14:25,331 INFO o.e.d.BasicMapDao [main] Getting test with id: 1
+2024-02-23 02:14:25,331 ERROR o.e.d.BasicMapDao [main] test with id: 1 does not exists
+2024-02-23 02:14:25,332 INFO o.e.d.BasicMapDao [main] Getting test with id: 1
+2024-02-23 02:14:25,336 INFO o.e.d.BasicMapDao [main] Started test with id: 1 delete
+2024-02-23 02:14:25,336 ERROR o.e.d.BasicMapDao [main] Storage has no test with id: 1
+2024-02-23 02:14:25,338 INFO o.e.d.BasicMapDao [main] Started test with id: 1 delete
+2024-02-23 02:14:25,355 INFO o.e.d.UserDao [main] Started looking for users with username:
+2024-02-23 02:14:25,358 INFO o.e.d.UserDao [main] Started looking for users with username:
+2024-02-23 02:14:25,360 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
+2024-02-23 02:14:25,361 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
+2024-02-23 02:14:25,362 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
+2024-02-23 02:14:25,363 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
+2024-02-23 02:14:25,365 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
+2024-02-23 02:14:25,366 INFO o.e.d.UserDao [main] Started looking for users with username:firstName.lastname
+2024-02-23 02:14:25,439 INFO o.e.s.i.TraineeServiceImpl [main] Checking if username:null.null is available
+2024-02-23 02:14:25,447 INFO o.e.s.i.TraineeServiceImpl [main] Updating saved trainee from dto
+2024-02-23 02:14:25,487 INFO o.e.s.i.UserServiceImpl [main] Adding suffix to username:test.test, username with largest suffix found:test.test
+2024-02-23 02:14:25,487 INFO o.e.s.i.UserServiceImpl [main] New username:test.test1

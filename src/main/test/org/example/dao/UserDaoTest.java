@@ -2,15 +2,14 @@ package org.example.dao;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.example.entity.Trainee;
 import org.example.entity.Trainer;
-import org.example.entity.TrainingType;
 import org.example.entity.User;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,12 +18,22 @@ class UserDaoTest {
   private Map<UUID, Trainer> trainerMap;
   private Map<UUID, Trainee> traineeMap;
   private UserDao dao;
-  private static final Trainee USER_1 = new Trainee("firstName", "lastname", new Date(), "address");
-  private static final Trainee USER_2 = new Trainee("firstName", "lastname1", new Date(), "address");
-  private static final Trainee USER_3 = new Trainee("firstName", "lastnameSuffix", new Date(), "address");
-  private static final Trainee USER_4 = new Trainee("prefixfirstName", "lastname99", new Date(), "address");
-  private static final Trainer USER_5 = new Trainer("firstName", "lastName", TrainingType.TYPE_1);
-  private static final Trainer USER_6 = new Trainer("firstName", "lastname1", TrainingType.TYPE_1);
+  private static Trainee USER_1;
+  private static Trainee USER_2;
+  private static Trainee USER_3;
+  private static Trainee USER_4;
+  private static Trainer USER_5;
+  private static Trainer USER_6;
+
+  @BeforeAll
+  static void beforeAll() {
+    USER_1 = Trainee.builder().id(UUID.randomUUID()).username("firstName.lastname").build();
+    USER_2 = Trainee.builder().id(UUID.randomUUID()).username("firstName.lastname1").build();
+    USER_3 = Trainee.builder().id(UUID.randomUUID()).username("firstName.lastnameSuffix").build();
+    USER_4 = Trainee.builder().id(UUID.randomUUID()).username("prefixfirstName.lastname99").build();
+    USER_5 = Trainer.builder().id(UUID.randomUUID()).username("firstName.lastname").build();
+    USER_6 = Trainer.builder().id(UUID.randomUUID()).username("firstName.lastname1").build();
+  }
 
   @BeforeEach
   void setUp() {

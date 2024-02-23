@@ -10,6 +10,7 @@ import org.example.exception.EntityNotFoundException;
 import org.example.mapper.TrainerMapper;
 import org.example.service.TrainerService;
 import org.example.service.UserService;
+import org.example.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,8 @@ public class TrainerServiceImpl implements TrainerService {
     if (userService.existsById(trainer.getId())){
       throw EntityCreatingException.alreadyExists(trainer.getId(), Trainer.class.getSimpleName());
     }
+    trainer = createTrainer(trainer);
+    log.info("Checking if username:{} is available", trainer.getUsername());
     userService.checkForUsernameAvailable(trainer);
     return trainerDao.save(trainer);
   }
@@ -49,8 +52,16 @@ public class TrainerServiceImpl implements TrainerService {
     if (storedTrainee.isEmpty()){
       throw EntityNotFoundException.byId(trainer.getId(), Trainer.class.getSimpleName());
     }
-    log.info("Updating saved trainee from dto");
+    log.info("Updating saved trainer from dto");
     trainerMapper.updateEntityFromEntity(trainer, storedTrainee.get());
     return trainerDao.save(storedTrainee.get());
+  }
+
+  private Trainer createTrainer(Trainer trainer) {
+    return trainerMapper.toBuilder(trainer)
+        .id(UUID.randomUUID())
+        .username(String.format("%s.%s", trainer.getFirstName(), trainer.getLastName()))
+        .password(PasswordGenerator.generatePassword())
+        .build();
   }
 }

@@ -11,6 +11,7 @@ import org.example.exception.EntityNotFoundException;
 import org.example.mapper.TraineeMapper;
 import org.example.service.TraineeService;
 import org.example.service.UserService;
+import org.example.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,8 @@ public class TraineeServiceImpl implements TraineeService {
     if (userService.existsById(trainee.getId())){
       throw EntityCreatingException.alreadyExists(trainee.getId(), Trainee.class.getSimpleName());
     }
+    trainee = createTrainee(trainee);
+    log.info("Checking if username:{} is available", trainee.getUsername());
     userService.checkForUsernameAvailable(trainee);
     return traineeDao.save(trainee);
   }
@@ -64,5 +67,13 @@ public class TraineeServiceImpl implements TraineeService {
       trainingDao.deleteUserTrainings(id);
       traineeDao.delete(id);
     }
+  }
+
+  private Trainee createTrainee(Trainee trainee) {
+    return traineeMapper.toBuilder(trainee)
+        .id(UUID.randomUUID())
+        .username(String.format("%s.%s", trainee.getFirstName(), trainee.getLastName()))
+        .password(PasswordGenerator.generatePassword())
+        .build();
   }
 }

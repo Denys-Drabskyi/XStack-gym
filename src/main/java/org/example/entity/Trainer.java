@@ -1,26 +1,26 @@
 package org.example.entity;
 
-import java.util.Objects;
+import java.util.UUID;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class Trainer extends User {
   private TrainingType specialization;
 
   @Builder
-  public Trainer(String firstName, String lastName, TrainingType specialization) {
-    super(firstName, lastName);
-    Objects.requireNonNull(specialization, "specialization can not be null");
+  public Trainer(UUID id, String firstName, String lastName, String username, String password, boolean isActive,
+                 TrainingType specialization) {
+    super(id, firstName, lastName, username, password, isActive);
     this.specialization = specialization;
   }
-
-  public void setSpecialization(TrainingType specialization) {
-    Objects.requireNonNull(specialization, "Specialization can not be null");
-    this.specialization = specialization;
+  public static class TrainerBuilder {
+    public TrainerBuilder() {}
   }
 }

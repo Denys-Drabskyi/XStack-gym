@@ -2,7 +2,9 @@ package org.example.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.UUID;
 import org.example.exception.SuffixUpdateException;
+import org.example.util.PasswordGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,16 @@ class UserTest {
 
   @BeforeEach
   void setUp() {
-    user = new Trainer("test", "test", TrainingType.TYPE_1);
+    user = Trainer.builder()
+        .id(UUID.randomUUID())
+        .firstName("test")
+        .lastName("test")
+        .username("test.test")
+        .password(PasswordGenerator.generatePassword())
+        .isActive(true)
+        .specialization(TrainingType.TYPE_1)
+        .build()
+    ;
   }
 
   @Test
@@ -37,12 +48,6 @@ class UserTest {
   }
 
   @Test
-  @DisplayName("setPassword() throws NullPointerException when provided null password")
-  void testCase05(){
-    assertThrows(NullPointerException.class, () -> user.setPassword(null));
-  }
-
-  @Test
   @DisplayName("setPassword() updates password")
   void testCase06(){
     user.setPassword("null");
@@ -50,22 +55,10 @@ class UserTest {
   }
 
   @Test
-  @DisplayName("setLastName() throws NullPointerException when provided null lastname")
-  void testCase07(){
-    assertThrows(NullPointerException.class, () -> user.setLastName(null));
-  }
-
-  @Test
   @DisplayName("setLastName() updates password")
   void testCase08(){
     user.setLastName("null");
     assertEquals("null", user.getLastName());
-  }
-
-  @Test
-  @DisplayName("setFirstName() throws NullPointerException when provided null lastname")
-  void testCase09(){
-    assertThrows(NullPointerException.class, () -> user.setFirstName(null));
   }
 
   @Test

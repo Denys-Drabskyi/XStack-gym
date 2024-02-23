@@ -7,7 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 import org.example.dao.TraineeDao;
@@ -35,7 +34,7 @@ class TraineeServiceImplTest {
   private UserService userService;
   @Mock
   private TraineeMapper traineeMapper;
-  private static final Trainee TRAINEE = new Trainee("firstname", "lastname", new Date(), "");
+  private static final Trainee TRAINEE = Trainee.builder().build();
 
   @InjectMocks
   private TraineeServiceImpl service;
@@ -65,7 +64,7 @@ class TraineeServiceImplTest {
   }
 
   @Test
-  @DisplayName("create(Trainee) throws EntityCreatingException when there is already user with this id")
+  @DisplayName("create() throws EntityCreatingException when there is already user with this id")
   void testCase04() {
     when(userService.existsById(any())).thenReturn(true);
 
@@ -77,10 +76,13 @@ class TraineeServiceImplTest {
   @DisplayName("create() creates trainee")
   void testCase05() {
     when(userService.existsById(any())).thenReturn(false);
-    when(traineeDao.save(TRAINEE)).thenReturn(TRAINEE);
+    when(traineeDao.save(any())).thenReturn(TRAINEE);
+    when(traineeMapper.toBuilder(TRAINEE)).thenReturn(Trainee.builder());
 
-    assertEquals(TRAINEE, service.create(TRAINEE));
+    service.create(TRAINEE);
     verify(userService, times(1)).checkForUsernameAvailable(any());
+    verify(traineeMapper, times(1)).toBuilder(TRAINEE);
+    verify(traineeDao, times(1)).save(any());
   }
 
   @Test

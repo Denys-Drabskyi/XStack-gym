@@ -5,14 +5,15 @@ import java.util.Base64;
 
 public class PasswordGenerator {
 
-  public String generatePassword(){
+  private static final SecureRandom RANDOM = new SecureRandom();
+
+  public static String generatePassword(){
     return generateValue(10);
   }
 
-  public String generateValue(int byteLength) {
-    SecureRandom secureRandom = new SecureRandom();
+  public static String generateValue(int byteLength) {
     byte[] token = new byte[byteLength];
-    secureRandom.nextBytes(token);
+    RANDOM.nextBytes(token);
     return Base64.getUrlEncoder().withoutPadding().encodeToString(token);
   }
 }

@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.UUID;
 import org.example.dao.TrainerDao;
 import org.example.entity.Trainer;
-import org.example.entity.TrainingType;
 import org.example.exception.EntityCreatingException;
 import org.example.exception.EntityNotFoundException;
 import org.example.mapper.TrainerMapper;
@@ -32,13 +31,14 @@ class TrainerServiceImplTest {
   @Mock
   private TrainerMapper trainerMapper;
 
-  private static final Trainer TRAINER = new Trainer("firstname", "lastname", TrainingType.TYPE_1);
+  private static final Trainer TRAINER = Trainer.builder().build();
+//      new Trainer("firstname", "lastname", TrainingType.TYPE_1);
 
   @InjectMocks
   private TrainerServiceImpl service;
 
   @Test
-  @DisplayName("getById() returns optional of Trainee")
+  @DisplayName("getById() returns optional of Trainer")
   void testCase01() {
     when(trainerDao.get(any())).thenReturn(Optional.of(TRAINER));
 
@@ -46,7 +46,7 @@ class TrainerServiceImplTest {
   }
 
   @Test
-  @DisplayName("getExistingById() throws EntityNotFoundException when there is no such trainee")
+  @DisplayName("getExistingById() throws EntityNotFoundException when there is no such trainer")
   void testCase02() {
     when(trainerDao.get(any())).thenReturn(Optional.empty());
 
@@ -54,7 +54,7 @@ class TrainerServiceImplTest {
   }
 
   @Test
-  @DisplayName("getExistingById() returns trainee")
+  @DisplayName("getExistingById() returns trainer")
   void testCase03() {
     when(trainerDao.get(any())).thenReturn(Optional.of(TRAINER));
 
@@ -62,7 +62,7 @@ class TrainerServiceImplTest {
   }
 
   @Test
-  @DisplayName("create(Trainee) throws EntityCreatingException when there is already user with this id")
+  @DisplayName("create() throws EntityCreatingException when there is already user with this id")
   void testCase04() {
     when(userService.existsById(any())).thenReturn(true);
 
@@ -71,17 +71,20 @@ class TrainerServiceImplTest {
   }
 
   @Test
-  @DisplayName("create() creates trainee")
+  @DisplayName("create() creates trainer")
   void testCase05() {
     when(userService.existsById(any())).thenReturn(false);
-    when(trainerDao.save(TRAINER)).thenReturn(TRAINER);
+    when(trainerDao.save(any())).thenReturn(TRAINER);
+    when(trainerMapper.toBuilder(TRAINER)).thenReturn(Trainer.builder());
 
-    assertEquals(TRAINER, service.create(TRAINER));
+    service.create(TRAINER);
     verify(userService, times(1)).checkForUsernameAvailable(any());
+    verify(trainerMapper, times(1)).toBuilder(TRAINER);
+    verify(trainerDao, times(1)).save(any());
   }
 
   @Test
-  @DisplayName("update() throws EntityNotFoundException when there is no such trainee")
+  @DisplayName("update() throws EntityNotFoundException when there is no such trainer")
   void testCase08() {
     when(trainerDao.get(TRAINER.getId())).thenReturn(Optional.empty());
 
@@ -89,7 +92,7 @@ class TrainerServiceImplTest {
   }
 
   @Test
-  @DisplayName("update() updates trainee")
+  @DisplayName("update() updates trainer")
   void testCase09() {
     when(trainerDao.get(TRAINER.getId())).thenReturn(Optional.of(TRAINER));
 
