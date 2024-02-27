@@ -18,6 +18,7 @@ class TrainingDaoTest {
   private static final UUID TEST_UUID = UUID.fromString("bdb48c40-c082-4038-82fa-c81cd1fc4270");
 
   private static final Training TRAINING_1 = new Training(
+      UUID.randomUUID(),
       TEST_UUID,
       UUID.randomUUID(),
       "",
@@ -28,6 +29,7 @@ class TrainingDaoTest {
 
   private static final Training TRAINING_2 = new Training(
       UUID.randomUUID(),
+      UUID.randomUUID(),
       TEST_UUID,
       "",
       TrainingType.TYPE_1,
@@ -36,6 +38,7 @@ class TrainingDaoTest {
   );
 
   private static final Training TRAINING_3 = new Training(
+      UUID.randomUUID(),
       UUID.randomUUID(),
       UUID.randomUUID(),
       "",

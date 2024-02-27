@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.example.exception.SuffixUpdateException;
@@ -14,8 +15,10 @@ import org.example.exception.SuffixUpdateException;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
+@NoArgsConstructor
 public abstract class User implements Entity<UUID> {
-  private final UUID id;
+  @Setter(AccessLevel.NONE)
+  private UUID id;
   private String firstName;
   private String lastName;
   @Setter(AccessLevel.NONE)

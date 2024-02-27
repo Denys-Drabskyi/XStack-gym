@@ -21,7 +21,8 @@ public abstract class BasicMapDao<ID, T extends Entity<ID>> implements CrudDao<T
   public T save(T entity) {
     Objects.requireNonNull(entity, String.format("%s must not be null", entityName));
     log.info("Saving {} with id: {}", entityName, entity.getId());
-    return storage.put(entity.getId(), entity);
+    storage.put(entity.getId(), entity);
+    return entity;
   }
 
   @Override
