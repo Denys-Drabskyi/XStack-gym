@@ -1,29 +1,33 @@
 package org.example.entity;
 
 import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
-import lombok.Data;
 
-@Data
-public class Trainee implements Entity<UUID> {
-  private final UUID id;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+public class Trainee extends User {
   private Date birthDate;
   private String address;
-  private final UUID userId;
 
-  public Trainee(Date birthDate, String address, UUID userId) {
-    Objects.requireNonNull(birthDate, "Birth date can not be null");
-    Objects.requireNonNull(address, "Address date can not be null");
-    Objects.requireNonNull(userId, "User id can not be null");
-    this.id = UUID.randomUUID();
+  @Builder
+  public Trainee(UUID id, String firstName, String lastName, String username, String password, boolean isActive,
+                 Date birthDate, String address) {
+    super(id, firstName, lastName, username, password, isActive);
     this.birthDate = birthDate;
     this.address = address;
-    this.userId = userId;
   }
 
-  @Override
-  public UUID getId() {
-    return this.id;
+  public static class TraineeBuilder {
+    public TraineeBuilder() {}
   }
 }

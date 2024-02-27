@@ -3,57 +3,60 @@ package org.example.mapper;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.UUID;
-import org.example.dto.TrainerDto;
 import org.example.entity.Trainer;
 import org.example.entity.TrainingType;
-import org.example.entity.User;
+import org.example.util.PasswordGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class TrainerMapperTest {
   private final TrainerMapperImpl mapper = new TrainerMapperImpl();
-  private static final TrainerDto TRAINER_DTO = new TrainerDto(UUID.randomUUID(), TrainingType.TYPE_1);
-  private static final User USER = new User("firstname", "lastname");
-  private static final Trainer TRAINER = new Trainer(TrainingType.TYPE_1, UUID.randomUUID());
+  private static final Trainer TRAINER = Trainer.builder()
+      .id(UUID.randomUUID())
+      .firstName("firstname")
+      .lastName("lastname")
+      .username("firstname.lastname")
+      .password(PasswordGenerator.generatePassword())
+      .isActive(true)
+      .specialization(TrainingType.TYPE_1)
+      .build();
 
-  @Test
-  @DisplayName("fromUser() test")
-  void testCase01() {
-    TrainerDto rez = mapper.fromUser(USER);
-    assertNull(rez.getUserId());
-    assertEquals(USER.getFirstName(), rez.getFirstName());
-    assertEquals(USER.getLastName(), rez.getLastName());
-    assertEquals(USER.getUsername(), rez.getUsername());
-    assertEquals(USER.getPassword(), rez.getPassword());
-    assertEquals(USER.isActive(), rez.isActive());
-  }
-
-  @Test
-  @DisplayName("newTrainerFromDto() test")
-  void testCase02() {
-    TRAINER_DTO.setUserId(UUID.randomUUID());
-    Trainer rez = mapper.newTrainerFromDto(TRAINER_DTO);
-    assertEquals(TRAINER_DTO.getUserId(), rez.getUserId());
-    assertEquals(TRAINER_DTO.getSpecialization(), rez.getSpecialization());
-  }
-
-  @Test
-  @DisplayName("updateDtoFromEntity() test")
-  void testCase03() {
-    TrainerDto rez = new TrainerDto();
-    mapper.updateDtoFromEntity(TRAINER, rez);
-    assertEquals(TRAINER.getUserId(), rez.getUserId());
-    assertEquals(TRAINER.getSpecialization(), rez.getSpecialization());
-    assertEquals(TRAINER.getId(), rez.getId());
-  }
+  private static final Trainer TRAINER_REZ = Trainer.builder()
+      .id(UUID.randomUUID())
+      .firstName("firstname1")
+      .lastName("lastname1")
+      .username("random.username")
+      .password(PasswordGenerator.generatePassword())
+      .isActive(false)
+      .specialization(TrainingType.TYPE_2)
+      .build();
 
   @Test
   @DisplayName("updateEntityFromEntity() test")
-  void testCase04() {
-    Trainer rez = new Trainer(TrainingType.TYPE_2, UUID.randomUUID());
-    mapper.updateEntityFromEntity(TRAINER, rez);
-//    because we cannot update userId
-    assertNotEquals(TRAINER.getUserId(), rez.getUserId());
+  void testCase01() {
+    mapper.updateEntityFromEntity(TRAINER, TRAINER_REZ);
+
+    assertEquals(TRAINER.getFirstName(), TRAINER_REZ.getFirstName());
+    assertEquals(TRAINER.getLastName(), TRAINER_REZ.getLastName());
+    assertEquals(TRAINER.isActive(), TRAINER_REZ.isActive());
+    assertEquals(TRAINER.getSpecialization(), TRAINER_REZ.getSpecialization());
+    assertEquals(TRAINER.isActive(), TRAINER_REZ.isActive());
+
+    assertNotEquals(TRAINER.getUsername(), TRAINER_REZ.getUsername());
+    assertNotEquals(TRAINER.getId(), TRAINER_REZ.getId());
+  }
+
+  @Test
+  @DisplayName("toBuilder() test")
+  void testCase02() {
+    Trainer rez = mapper.toBuilder(TRAINER).build();
+
+    assertEquals(TRAINER.getFirstName(), rez.getFirstName());
+    assertEquals(TRAINER.getLastName(), rez.getLastName());
+    assertEquals(TRAINER.isActive(), rez.isActive());
     assertEquals(TRAINER.getSpecialization(), rez.getSpecialization());
+    assertEquals(TRAINER.getUsername(), rez.getUsername());
+    assertEquals(TRAINER.getId(), rez.getId());
+    assertEquals(TRAINER.isActive(), rez.isActive());
   }
 }

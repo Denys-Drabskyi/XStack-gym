@@ -36,6 +36,7 @@ class TrainingServiceImplTest {
   private static final Training TRAINING = new Training(
       UUID.randomUUID(),
       UUID.randomUUID(),
+      UUID.randomUUID(),
       "",
       TrainingType.TYPE_1,
       new Date(),

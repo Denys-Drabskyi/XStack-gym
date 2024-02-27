@@ -1,13 +1,12 @@
 package org.example.service;
 
+import java.util.Optional;
 import java.util.UUID;
-import org.example.dto.TrainerDto;
 import org.example.entity.Trainer;
 
 public interface TrainerService {
-  TrainerDto getById(UUID id);
+  Optional<Trainer> getById(UUID id);
+  Trainer getExistingById(UUID id);
   Trainer create(Trainer trainer);
-  TrainerDto create(TrainerDto trainer);
   Trainer update(Trainer trainer);
-  TrainerDto update(TrainerDto trainer);
 }
