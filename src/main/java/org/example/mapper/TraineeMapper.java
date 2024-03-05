@@ -1,14 +1,20 @@
 package org.example.mapper;
 
+import org.example.dto.TraineeDto;
 import org.example.entity.Trainee;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface TraineeMapper {
-  @Mapping(source = "active", target = "isActive")
-  Trainee.TraineeBuilder toBuilder (Trainee trainee);
-  @Mapping(target = "username", ignore = true)
-  void updateEntityFromEntity(Trainee from, @MappingTarget Trainee target);
+  Trainee.TraineeBuilder toBuilder(TraineeDto dto);
+
+  @Mapping(target = "username", source = "user.username")
+  @Mapping(target = "firstName", source = "user.firstName")
+  @Mapping(target = "lastName", source = "user.lastName")
+  @Mapping(target = "isActive", source = "user.active")
+  TraineeDto toDto(Trainee entity);
+
+  void updateEntityFromDto(TraineeDto from, @MappingTarget Trainee target);
 }

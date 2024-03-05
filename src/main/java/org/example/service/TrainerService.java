@@ -1,12 +1,20 @@
 package org.example.service;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
+import org.example.dto.TrainerDto;
+import org.example.dto.UserCredentialsDto;
 import org.example.entity.Trainer;
 
 public interface TrainerService {
-  Optional<Trainer> getById(UUID id);
-  Trainer getExistingById(UUID id);
-  Trainer create(Trainer trainer);
-  Trainer update(Trainer trainer);
+  boolean existsById(UUID id);
+
+  TrainerDto get(UserCredentialsDto credentials);
+  TrainerDto create(TrainerDto trainer);
+
+  TrainerDto update(TrainerDto trainer);
+
+  void addTrainerToTrainee(String trainerUsername, UserCredentialsDto traineeCredentials);
+
+  List<Trainer> getTrainersNotAssignedToTrainee(UserCredentialsDto credentials);
 }

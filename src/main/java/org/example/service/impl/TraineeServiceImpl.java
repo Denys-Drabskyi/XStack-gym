@@ -1,17 +1,18 @@
 package org.example.service.impl;
 
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.example.aop.Auth;
 import org.example.dao.TraineeDao;
-import org.example.dao.TrainingDao;
+import org.example.dto.TraineeDto;
+import org.example.dto.UserCredentialsDto;
 import org.example.entity.Trainee;
-import org.example.exception.EntityCreatingException;
 import org.example.exception.EntityNotFoundException;
 import org.example.mapper.TraineeMapper;
 import org.example.service.TraineeService;
 import org.example.service.UserService;
-import org.example.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,59 +22,56 @@ public class TraineeServiceImpl implements TraineeService {
   @Autowired
   private TraineeDao traineeDao;
   @Autowired
-  private TrainingDao trainingDao;
-  @Autowired
   private UserService userService;
   @Autowired
   private TraineeMapper traineeMapper;
 
   @Override
-  public Optional<Trainee> getById(UUID id) {
-    return traineeDao.get(id);
+  public boolean existsById(UUID id) {
+    return traineeDao.existById(id);
+  }
+
+  @Auth
+  @Override
+  public TraineeDto get(UserCredentialsDto credentials) {
+    return traineeMapper.toDto(traineeDao.getByUsername(credentials.getUsername())
+        .orElseThrow(() -> EntityNotFoundException.byUsername(credentials.getUsername(), Trainee.class.getSimpleName()))
+    );
   }
 
   @Override
-  public Trainee getExistingById(UUID id) {
-    return getById(id)
-        .orElseThrow(() -> EntityNotFoundException.byId(id, Trainee.class.getSimpleName()));
+  public TraineeDto create(TraineeDto dto) {
+    return traineeMapper.toDto(traineeDao.save(createTrainee(dto)));
   }
 
+  @Auth
   @Override
-  public Trainee create(Trainee trainee) {
-    if (userService.existsById(trainee.getId())){
-      throw EntityCreatingException.alreadyExists(trainee.getId(), Trainee.class.getSimpleName());
-    }
-    trainee = createTrainee(trainee);
-    log.info("Checking if username:{} is available", trainee.getUsername());
-    userService.checkForUsernameAvailable(trainee);
-    return traineeDao.save(trainee);
-  }
-
-  @Override
-  public Trainee update(Trainee trainee) {
-    Optional<Trainee> storedTrainee = traineeDao.get(trainee.getId());
+  @Transactional
+  public TraineeDto update(TraineeDto dto) {
+    Optional<Trainee> storedTrainee = traineeDao.getById(dto.getId());
     if (storedTrainee.isEmpty()){
-      throw EntityNotFoundException.byId(trainee.getId(), Trainee.class.getSimpleName());
+      throw EntityNotFoundException.byId(dto.getId(), Trainee.class.getSimpleName());
     }
-    log.info("Updating saved trainee from dto");
-    traineeMapper.updateEntityFromEntity(trainee, storedTrainee.get());
-    return traineeDao.save(storedTrainee.get());
+    updateTrainee(dto, storedTrainee.get());
+    return traineeMapper.toDto(traineeDao.save(storedTrainee.get()));
   }
 
+  @Auth
   @Override
-  public void deleteById(UUID id) {
-    Optional<Trainee> trainee = traineeDao.get(id);
-    if (trainee.isPresent()) {
-      trainingDao.deleteUserTrainings(id);
-      traineeDao.delete(id);
-    }
+  public void deleteByUsername(UserCredentialsDto credentials) {
+    Optional<Trainee> trainee = traineeDao.getByUsername(credentials.getUsername());
+    trainee.ifPresent(value -> traineeDao.delete(value.getId()));
   }
 
-  private Trainee createTrainee(Trainee trainee) {
-    return traineeMapper.toBuilder(trainee)
-        .id(UUID.randomUUID())
-        .username(String.format("%s.%s", trainee.getFirstName(), trainee.getLastName()))
-        .password(PasswordGenerator.generatePassword())
+  private void updateTrainee(TraineeDto dto, Trainee entity) {
+    log.info("Updating saved trainee from dto");
+    traineeMapper.updateEntityFromDto(dto, entity);
+    userService.update(dto, entity.getUser());
+  }
+
+  private Trainee createTrainee(TraineeDto dto) {
+    return traineeMapper.toBuilder(dto)
+        .user(userService.createUser(dto))
         .build();
   }
 }

@@ -1,6 +1,6 @@
 package org.example.entity;
 
-public interface Entity<ID> {
+public interface IdEntity<ID> {
   ID getId();
 
 }
