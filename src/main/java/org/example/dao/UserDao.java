@@ -22,12 +22,11 @@ public class UserDao extends BasicDao<UUID, User, UserRepository> {
     return repository.findTopByUsernameLikeOrderByUsernameDesc(pattern);
   }
 
-  public boolean existsById(UUID id) {
-    log.info("Started looking for users with id{}", id);
-    return repository.existsById(id);
-  }
-
   public Optional<User> getByUsername(String username) {
     return repository.getByUsername(username);
+  }
+
+  public boolean existsByUsernameAndPasswordAndActive(String username, String password, boolean active) {
+    return repository.existsByUsernameAndPasswordAndActive(username, password, active);
   }
 }

@@ -37,6 +37,15 @@ public class Training implements IdEntity<UUID> {
   private Date date;
   private long duration;
 
+
+  @Override
+  public String toString() {
+    return "Training{" +
+        "id=" + id +
+        ", date=" + date +
+        '}';
+  }
+
   @Override
   public UUID getId() {
     return this.id;

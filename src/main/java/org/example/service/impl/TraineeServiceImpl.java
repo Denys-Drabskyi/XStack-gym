@@ -40,6 +40,7 @@ public class TraineeServiceImpl implements TraineeService {
   }
 
   @Override
+  @Transactional
   public TraineeDto create(TraineeDto dto) {
     return traineeMapper.toDto(traineeDao.save(createTrainee(dto)));
   }
@@ -48,9 +49,9 @@ public class TraineeServiceImpl implements TraineeService {
   @Override
   @Transactional
   public TraineeDto update(TraineeDto dto) {
-    Optional<Trainee> storedTrainee = traineeDao.getById(dto.getId());
+    Optional<Trainee> storedTrainee = traineeDao.getByUsername(dto.getUsername());
     if (storedTrainee.isEmpty()){
-      throw EntityNotFoundException.byId(dto.getId(), Trainee.class.getSimpleName());
+      throw EntityNotFoundException.byUsername(dto.getUsername(), Trainee.class.getSimpleName());
     }
     updateTrainee(dto, storedTrainee.get());
     return traineeMapper.toDto(traineeDao.save(storedTrainee.get()));

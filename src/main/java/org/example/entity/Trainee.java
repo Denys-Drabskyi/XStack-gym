@@ -3,6 +3,7 @@ package org.example.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,7 +40,7 @@ public class Trainee implements IdEntity<UUID> {
   @OneToMany(mappedBy = "trainee", orphanRemoval = true, cascade = CascadeType.ALL)
   private List<Training> trainingList;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(name="trainer_trainee",
       joinColumns=@JoinColumn(name="trainee_id"),
       inverseJoinColumns=@JoinColumn(name="trainer_id"))

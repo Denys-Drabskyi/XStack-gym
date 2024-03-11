@@ -2,6 +2,7 @@ package org.example.service.impl;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.TrainingType;
 import org.example.repository.TrainingTypeRepository;

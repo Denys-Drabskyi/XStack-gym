@@ -34,11 +34,11 @@ public class TrainingServiceImpl implements TrainingService {
 
   @Override
   public TrainingDto create(TrainingDto dto) {
-    if (traineeService.existsById(dto.getTraineeDto().getId())){
+    if (!traineeService.existsById(dto.getTraineeDto().getId())) {
       throw EntityNotFoundException.byId(dto.getTraineeDto().getId(), Trainee.class.getSimpleName());
     }
 
-    if (trainerService.existsById(dto.getTrainerDto().getId())){
+    if (!trainerService.existsById(dto.getTrainerDto().getId())) {
       throw EntityNotFoundException.byId(dto.getTraineeDto().getId(), Trainer.class.getSimpleName());
     }
 

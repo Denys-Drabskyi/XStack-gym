@@ -1,5 +1,6 @@
 package org.example.mapper;
 
+import java.util.List;
 import org.example.dto.TrainerDto;
 import org.example.entity.Trainer;
 import org.mapstruct.Mapper;
@@ -17,5 +18,8 @@ public interface TrainerMapper {
   TrainerDto toDto(Trainer entity);
 
   @Mapping(target = "specializations", ignore = true)
+  @Mapping(target = "id", ignore = true)
   void updateEntityFromDto(TrainerDto from, @MappingTarget Trainer target);
+
+  List<TrainerDto> toDtoList(List<Trainer> trainers);
 }

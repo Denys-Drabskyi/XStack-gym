@@ -14,14 +14,13 @@ class UserTest {
 
   @BeforeEach
   void setUp() {
-    user = Trainer.builder()
+    user = User.builder()
         .id(UUID.randomUUID())
         .firstName("test")
         .lastName("test")
         .username("test.test")
         .password(PasswordGenerator.generatePassword())
-        .isActive(true)
-        .specialization(TrainingType.TYPE_1)
+        .active(true)
         .build()
     ;
   }

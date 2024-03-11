@@ -3,6 +3,7 @@ package org.example.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,7 +30,7 @@ public class Trainer implements IdEntity<UUID> {
   @Column(name = "id", nullable = false)
   private UUID id;
 
-  @OneToMany
+  @OneToMany(fetch = FetchType.EAGER)
   private List<TrainingType> specializations;
 
   @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)

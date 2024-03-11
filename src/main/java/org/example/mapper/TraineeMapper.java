@@ -16,5 +16,6 @@ public interface TraineeMapper {
   @Mapping(target = "isActive", source = "user.active")
   TraineeDto toDto(Trainee entity);
 
+  @Mapping(target = "id", ignore = true)
   void updateEntityFromDto(TraineeDto from, @MappingTarget Trainee target);
 }

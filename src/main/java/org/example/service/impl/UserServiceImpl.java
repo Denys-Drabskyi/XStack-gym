@@ -19,15 +19,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
   @Autowired
-  private UserRepository userRepository;
-  @Autowired
   private UserDao userDao;
   @Autowired
   private UserMapper userMapper;
 
   @Override
-  public boolean existsById(UUID id){
-    return userDao.existsById(id);
+  public boolean existsById(UUID id) {
+    return userDao.existById(id);
   }
 
   @Override
@@ -46,7 +44,7 @@ public class UserServiceImpl implements UserService {
   public void update(UserDto dto, User user) {
     log.info("Updating user with id:{}", user.getId());
     userMapper.updateEntityFromDto(dto, user);
-    userRepository.save(user);
+    userDao.save(user);
     log.info("Updated user with id:{}", user.getId());
   }
 
@@ -63,28 +61,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void activate(UserCredentialsDto dto){
+  public void changeActive(UserCredentialsDto dto){
     User user = getByUsername(dto.getUsername());
-    if (user.isActive()){
-      return;
-    }
-    user.setActive(true);
-    userDao.save(user);
-  }
-
-  @Override
-  public void deactivate(UserCredentialsDto dto){
-    User user = getByUsername(dto.getUsername());
-    if (!user.isActive()){
-      return;
-    }
-    user.setActive(false);
+    user.setActive(!user.isActive());
     userDao.save(user);
   }
 
   @Override
   public boolean auth(UserCredentialsDto dto) {
-    return userRepository.existsByUsernameAndPasswordAndActive(dto.getUsername(), dto.getPassword(), true);
+    return userDao.existsByUsernameAndPasswordAndActive(dto.getUsername(), dto.getPassword(), true);
   }
 
   private void updateUsernameIfAlreadyExists(User user) {

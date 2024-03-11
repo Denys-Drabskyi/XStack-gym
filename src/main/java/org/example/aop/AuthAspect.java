@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class AuthAspect {
   private final UserService userService;
 
-  @Pointcut("@annotation(org.example.aop.Auth) && args(credentialsDto)")
+  @Pointcut("@annotation(org.example.aop.Auth) && args(credentialsDto, ..)")
   public void auth(UserCredentialsDto credentialsDto) {}
 
   @Before(value = "auth(credentialsDto)", argNames = "credentialsDto")

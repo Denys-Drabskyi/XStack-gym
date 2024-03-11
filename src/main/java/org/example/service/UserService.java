@@ -13,9 +13,7 @@ public interface UserService {
 
   void updatePassword(PasswordChangeDto dto);
 
-  void activate(UserCredentialsDto dto);
-
-  void deactivate(UserCredentialsDto dto);
+  void changeActive(UserCredentialsDto dto);
 
   boolean auth(UserCredentialsDto dto);
 }

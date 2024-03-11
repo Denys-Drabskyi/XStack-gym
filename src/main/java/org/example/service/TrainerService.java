@@ -14,7 +14,7 @@ public interface TrainerService {
 
   TrainerDto update(TrainerDto trainer);
 
-  void addTrainerToTrainee(String trainerUsername, UserCredentialsDto traineeCredentials);
+  void addTrainerToTrainee(UserCredentialsDto traineeCredentials, String trainerUsername);
 
-  List<Trainer> getTrainersNotAssignedToTrainee(UserCredentialsDto credentials);
+  List<TrainerDto> getTrainersNotAssignedToTrainee(UserCredentialsDto credentials);
 }

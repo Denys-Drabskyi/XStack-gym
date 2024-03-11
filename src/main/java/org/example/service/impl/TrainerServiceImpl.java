@@ -53,11 +53,12 @@ public class TrainerServiceImpl implements TrainerService {
     return trainerMapper.toDto(trainerDao.save(createTrainer(dto)));
   }
 
+  @Auth
   @Override
   public TrainerDto update(TrainerDto dto) {
-    Optional<Trainer> storedTrainer = trainerDao.getById(dto.getId());
+    Optional<Trainer> storedTrainer = trainerDao.getByUsername(dto.getUsername());
     if (storedTrainer.isEmpty()){
-      throw EntityNotFoundException.byId(dto.getId(), Trainer.class.getSimpleName());
+      throw EntityNotFoundException.byUsername(dto.getUsername(), Trainer.class.getSimpleName());
     }
     updateTrainer(dto, storedTrainer.get());
     return trainerMapper.toDto(trainerDao.save(storedTrainer.get()));
@@ -65,7 +66,7 @@ public class TrainerServiceImpl implements TrainerService {
 
   @Auth
   @Override
-  public void addTrainerToTrainee(String trainerUsername, UserCredentialsDto traineeCredentials) {
+  public void addTrainerToTrainee(UserCredentialsDto traineeCredentials, String trainerUsername) {
     Trainee trainee = traineeDao.getByUsername(traineeCredentials.getUsername())
         .orElseThrow(() -> EntityNotFoundException.byUsername(traineeCredentials.getUsername(), Trainee.class.getSimpleName()));
     Trainer trainer = trainerDao.getByUsername(trainerUsername)
@@ -76,11 +77,11 @@ public class TrainerServiceImpl implements TrainerService {
 
   @Auth
   @Override
-  public List<Trainer> getTrainersNotAssignedToTrainee(UserCredentialsDto traineeCredentials) {
+  public List<TrainerDto> getTrainersNotAssignedToTrainee(UserCredentialsDto traineeCredentials) {
     log.info("Seeking trainers, not assigned to user:{}", traineeCredentials.getUsername());
     Trainee trainee = traineeDao.getByUsername(traineeCredentials.getUsername())
         .orElseThrow(() -> EntityNotFoundException.byUsername(traineeCredentials.getUsername(), Trainee.class.getSimpleName()));
-    return trainerDao.getTrainersNotAssignedToTrainee(trainee);
+    return trainerMapper.toDtoList(trainerDao.getTrainersNotAssignedToTrainee(trainee));
   }
 
   private void updateTrainer(TrainerDto dto, Trainer entity) {
