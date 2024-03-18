@@ -1,1 +1,36 @@
-2024-02-27 11:10:09,235 INFO o.e.s.i.TraineeServiceImpl [main] Checking if username:null.null is available
+2024-03-07 15:49:51,998 INFO o.h.v.i.u.Version [main] HV000001: Hibernate Validator 8.0.1.Final
+2024-03-07 15:49:54,354 INFO o.e.d.BasicDao [main] Saving null with id: 0ffb0d24-5045-41cb-8a19-4220a4b0ea0a
+2024-03-07 15:49:54,386 INFO o.e.d.BasicDao [main] Getting null with id: 802ee3e3-f3dd-4820-ac44-d0fa188c749d
+2024-03-07 15:49:54,392 INFO o.e.d.BasicDao [main] Getting null with id: 9ddcaaf7-a964-4639-a8cb-110b0d50dc04
+2024-03-07 15:49:54,406 INFO o.e.d.BasicDao [main] Started null with id: 2c5e435a-6e05-49b6-8f2e-c4524b244f8b delete
+2024-03-07 15:49:54,411 INFO o.e.d.BasicDao [main] Checking if null exist by id: null
+2024-03-07 15:49:54,436 INFO o.e.d.BasicDao [main] Checking if null exist by id: d472e4d9-d01d-4d4f-a0ba-0b47d0a888b1
+2024-03-07 15:49:54,587 INFO o.e.s.i.TrainerServiceImpl [main] Crating new trainer
+2024-03-07 15:49:54,595 INFO o.e.s.i.TrainerServiceImpl [main] Updating saved trainer from dto
+2024-03-07 15:49:54,613 INFO o.e.s.i.TrainerServiceImpl [main] Seeking trainers, not assigned to user:null
+2024-03-07 15:49:54,617 INFO o.e.s.i.TrainerServiceImpl [main] Seeking trainers, not assigned to user:null
+2024-03-07 15:49:54,829 INFO o.e.s.i.TraineeServiceImpl [main] Updating saved trainee from dto
+2024-03-07 15:49:54,921 INFO o.e.a.AuthAspect [main] Started user:null auth
+2024-03-07 15:49:54,922 ERROR o.e.a.AuthAspect [main] User:null is not authenticated
+2024-03-07 15:49:54,924 INFO o.e.a.AuthAspect [main] Started user:null auth
+2024-03-07 15:49:54,924 ERROR o.e.a.AuthAspect [main] User:null is not authenticated
+2024-03-07 15:49:54,926 INFO o.e.a.AuthAspect [main] Started user:null auth
+2024-03-07 15:49:54,926 ERROR o.e.a.AuthAspect [main] User:null is not authenticated
+2024-03-07 15:49:54,928 INFO o.e.a.AuthAspect [main] Started user:null auth
+2024-03-07 15:49:54,928 ERROR o.e.a.AuthAspect [main] User:null is not authenticated
+2024-03-07 15:49:54,930 INFO o.e.a.AuthAspect [main] Started user:null auth
+2024-03-07 15:49:54,930 ERROR o.e.a.AuthAspect [main] User:null is not authenticated
+2024-03-07 15:49:54,932 INFO o.e.a.AuthAspect [main] Started user:null auth
+2024-03-07 15:49:54,933 ERROR o.e.a.AuthAspect [main] User:null is not authenticated
+2024-03-07 15:49:54,935 INFO o.e.a.AuthAspect [main] Started user:null auth
+2024-03-07 15:49:54,935 ERROR o.e.a.AuthAspect [main] User:null is not authenticated
+2024-03-07 15:49:54,937 INFO o.e.a.AuthAspect [main] Started user:null auth
+2024-03-07 15:49:54,938 ERROR o.e.a.AuthAspect [main] User:null is not authenticated
+2024-03-07 15:49:54,940 INFO o.e.a.AuthAspect [main] Started user:null auth
+2024-03-07 15:49:54,940 ERROR o.e.a.AuthAspect [main] User:null is not authenticated
+2024-03-07 15:49:55,053 INFO o.e.s.i.UserServiceImpl [main] Checking if username:test is available
+2024-03-07 15:49:55,059 INFO o.e.s.i.UserServiceImpl [main] Checking if username:test is available
+2024-03-07 15:49:55,060 INFO o.e.s.i.UserServiceImpl [main] Adding suffix to username:fname.lname, username with largest suffix found:fname.lname1
+2024-03-07 15:49:55,061 INFO o.e.s.i.UserServiceImpl [main] New username:fname.lname2
+2024-03-07 15:49:55,064 INFO o.e.s.i.UserServiceImpl [main] Updating user with id:null
+2024-03-07 15:49:55,064 INFO o.e.s.i.UserServiceImpl [main] Updated user with id:null

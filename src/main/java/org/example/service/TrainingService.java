@@ -1,9 +1,19 @@
 package org.example.service;
 
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import org.example.dto.TrainingDto;
+import org.example.dto.UserCredentialsDto;
 import org.example.entity.Training;
 
 public interface TrainingService {
-  Training getById(UUID id);
-  Training create(Training training);
+  TrainingDto create(TrainingDto training);
+
+  List<Training> getTraineeTrainingListByTrainerAndDateBetween
+      (UserCredentialsDto traineeCredentials, Collection<String> trainerUsernames, Date from, Date to);
+
+  List<Training> getTrainerTrainingListByTraineeAndDateBetween
+      (UserCredentialsDto trainerCredentials, Collection<String> traineeUsernames, Date from, Date to);
 }
