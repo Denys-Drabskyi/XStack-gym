@@ -1,30 +1,55 @@
 package org.example.entity;
 
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.GenerationType;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.Table;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.example.exception.SuffixUpdateException;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
+@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class User implements Entity<UUID> {
+@Table(name = "User")
+public class User implements IdEntity<UUID> {
+  @Id
+  @GeneratedValue(generator = "UUID")
+  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+  @Column(name = "id", columnDefinition = "char(36)")
+  @Type(type = "org.hibernate.type.UUIDCharType")
   @Setter(AccessLevel.NONE)
   private UUID id;
+
+  @Column(nullable = false)
   private String firstName;
+  @Column(nullable = false)
   private String lastName;
+  @Column(nullable = false, unique = true)
   @Setter(AccessLevel.NONE)
   private String username;
+  @Column(nullable = false)
   private String password;
-  private boolean isActive;
+  @Column(nullable = false)
+  private boolean active;
 
   @Override
   public UUID getId() {
@@ -32,14 +57,21 @@ public abstract class User implements Entity<UUID> {
   }
 
   public void addSuffixToUserNameAfter(String username) {
-    String pattern = String.format("%s\\d*", this.username);
-    if (!username.matches(pattern)) {
+    String patternString = String.format("(?i)%s\\d*", this.username);
+    if (!username.matches(patternString)) {
       throw SuffixUpdateException.wrongUsername(this.username, username);
     }
-    String suffix = username.replace(this.getUsername(), "");
+    patternString = String.format("(?i)%s", this.username);
+    Pattern pattern = Pattern.compile(patternString);
+    Matcher matcher = pattern.matcher(username);
+    String suffix = matcher.replaceAll("");
     if (suffix.equals("")) {
       suffix = "0";
     }
     this.username = this.username.concat(String.valueOf(Integer.parseInt(suffix) + 1));
+  }
+
+  public static class UserBuilder {
+    public UserBuilder() {}
   }
 }
