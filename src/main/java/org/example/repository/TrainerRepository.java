@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TrainerRepository extends JpaRepository<Trainer, UUID> {
   Optional<Trainer> getByUserUsername(String username);
-  List<Trainer> getByTraineesNotContaining(Trainee trainee);
+  List<Trainer> getTrainersByTraineesNotContainingAndUserActive(Trainee trainees, boolean active);
 
   default List<Trainer> getTrainersNotAssignedToTrainee(Trainee trainee) {
-    return getByTraineesNotContaining(trainee);
+    return getTrainersByTraineesNotContainingAndUserActive(trainee, true);
   }
 }

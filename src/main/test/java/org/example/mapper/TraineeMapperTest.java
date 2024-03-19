@@ -34,7 +34,7 @@ class TraineeMapperTest {
       .lastName("not lastName")
       .username("not firstName.lastName")
       .password(PasswordGenerator.generatePassword())
-      .isActive(false)
+      .active(false)
       .birthDate(LocalDate.of(2001,1,1))
       .address("now address")
       .build();

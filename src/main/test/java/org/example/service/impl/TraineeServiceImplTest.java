@@ -107,4 +107,13 @@ class TraineeServiceImplTest {
     service.deleteByUsername(DTO);
     verify(traineeDao, times(1)).delete(any());
   }
+
+  @Test
+  @DisplayName("getByUsername() delete trainee")
+  void testCase13() {
+    when(traineeDao.getByUsername(any())).thenReturn(Optional.of(TRAINEE));
+
+    service.getByUsername("username");
+    verify(traineeDao, times(1)).getByUsername(any());
+  }
 }

@@ -1,12 +1,13 @@
 package org.example.service.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.example.entity.TrainingType;
 import org.example.repository.TrainingTypeRepository;
@@ -40,9 +41,19 @@ class TrainingTypeServiceImplTest {
   @DisplayName("getByName(string) test")
   void testCase02() {
     String name = "";
-    when(repository.getByName(any())).thenReturn(new TrainingType(UUID.randomUUID(), "test"));
+    when(repository.getByName(any())).thenReturn(Optional.of(new TrainingType(UUID.randomUUID(), "test")));
 
     trainingTypeService.getByName(name);
     verify(repository, times(1)).getByName(name);
+  }
+
+
+  @Test
+  @DisplayName("findAll() test")
+  void testCase03() {
+    when(repository.findAll()).thenReturn(List.of(new TrainingType(UUID.randomUUID(), "test")));
+
+    trainingTypeService.getTypes();
+    verify(repository, times(1)).findAll();
   }
 }

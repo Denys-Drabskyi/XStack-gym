@@ -1,6 +1,8 @@
 package org.example.configuration;
 
-import jakarta.persistence.EntityManagerFactory;
+//import jakarta.persistence.EntityManagerFactory;
+import java.util.Properties;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.example.configuration.properties.DataSourceProperties;
@@ -24,6 +26,7 @@ public class DataSourceConfig {
   @Bean
   public DataSource dataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
     dataSource.setDriverClassName(properties.getDriverClassName());
     dataSource.setUrl(properties.getUrl());
     dataSource.setUsername(properties.getUsername());
@@ -37,9 +40,13 @@ public class DataSourceConfig {
     vendorAdapter.setShowSql(true);
     vendorAdapter.setGenerateDdl(true);
 
+    Properties properties1 = new Properties();
+//    properties1.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+
     LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
     factory.setJpaVendorAdapter(vendorAdapter);
     factory.setPackagesToScan("org.example");
+    factory.setJpaProperties(properties1);
     factory.setDataSource(dataSource);
 
     return factory;

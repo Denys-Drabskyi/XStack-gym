@@ -2,6 +2,7 @@ package org.example.service;
 
 import java.util.UUID;
 import org.example.dto.TraineeDto;
+import org.example.dto.TraineeDtoWithTrainers;
 import org.example.dto.UserCredentialsDto;
 
 public interface TraineeService {
@@ -9,9 +10,11 @@ public interface TraineeService {
 
   TraineeDto get(UserCredentialsDto credentials);
 
+  TraineeDtoWithTrainers getByUsername(String username);
+
   TraineeDto create(TraineeDto dto);
 
-  TraineeDto update(TraineeDto dto);
+  TraineeDtoWithTrainers update(TraineeDto dto);
 
   void deleteByUsername(UserCredentialsDto credentials);
 }

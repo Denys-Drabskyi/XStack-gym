@@ -1,14 +1,23 @@
 package org.example.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonView;
+//import jakarta.validation.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserCredentialsDto implements ValidatedDto {
-  @NotBlank(message = "Username must not be blank")
+  @JsonView({Views.InList.class, Views.Credentials.class})
+  @NotBlank(message = "Username must not be blank", groups = OnAuth.class)
   private String username;
-  @NotBlank(message = "Password must not be blank")
+
+  @JsonView(Views.Credentials.class)
+  @NotBlank(message = "Password must not be blank", groups = OnAuth.class)
   private String password;
 }

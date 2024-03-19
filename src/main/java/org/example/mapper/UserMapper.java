@@ -9,7 +9,6 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
   User.UserBuilder toBuilder(UserDto dto);
-  UserDto userToUserDto(User user);
 
   @Mapping(target = "active", ignore = true)
   void updateEntityFromDto(UserDto from, @MappingTarget User target);

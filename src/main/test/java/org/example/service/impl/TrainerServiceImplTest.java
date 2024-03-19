@@ -145,4 +145,22 @@ class TrainerServiceImplTest {
     verify(trainerDao, times(1)).getTrainersNotAssignedToTrainee(any());
   }
 
+  @Test
+  @DisplayName("getByUsername() throws not found exception")
+  void testCase12() {
+    when(trainerDao.getByUsername(DTO.getUsername())).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.getByUsername(DTO.getUsername()));
+    verify(trainerDao, times(1)).getByUsername(any());
+  }
+
+  @Test
+  @DisplayName("getByUsername() returns trainer")
+  void testCase13() {
+    when(trainerDao.getByUsername(DTO.getUsername())).thenReturn(Optional.of(TRAINER));
+
+    service.getByUsername(DTO.getUsername());
+    verify(trainerDao, times(1)).getByUsername(any());
+  }
+
 }

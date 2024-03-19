@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TrainingTypeRepository extends JpaRepository<TrainingType, UUID> {
   List<TrainingType> getByNameIn(Collection<String> name);
-  TrainingType getByName(String name);
+  Optional<TrainingType> getByName(String name);
 }

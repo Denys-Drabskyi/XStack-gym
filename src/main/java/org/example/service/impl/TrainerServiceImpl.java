@@ -1,14 +1,17 @@
 package org.example.service.impl;
 
-import jakarta.transaction.Transactional;
+//import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.example.aop.Auth;
 import org.example.dao.TraineeDao;
 import org.example.dao.TrainerDao;
 import org.example.dto.TrainerDto;
+import org.example.dto.TrainerDtoWithTrainees;
+import org.example.dto.UpdateTrainersListDto;
 import org.example.dto.UserCredentialsDto;
 import org.example.entity.Trainee;
 import org.example.entity.Trainer;
@@ -39,32 +42,36 @@ public class TrainerServiceImpl implements TrainerService {
     return trainerDao.existById(id);
   }
 
-  @Auth
   @Override
   public TrainerDto get(UserCredentialsDto credentials) {
     return trainerMapper.toDto(trainerDao.getByUsername(credentials.getUsername())
         .orElseThrow(() -> EntityNotFoundException.byUsername(credentials.getUsername(), Trainer.class.getSimpleName()))
     );
   }
+  @Override
+  public TrainerDtoWithTrainees getByUsername(String username) {
+    return trainerMapper.toDtoWithTrainees(trainerDao.getByUsername(username)
+        .orElseThrow(() -> EntityNotFoundException.byUsername(username, Trainer.class.getSimpleName()))
+    );
+  }
+
 
   @Override
   @Transactional
-  public TrainerDto create(TrainerDto dto) {
-    return trainerMapper.toDto(trainerDao.save(createTrainer(dto)));
+  public UserCredentialsDto create(TrainerDto dto) {
+    return trainerMapper.toCredentials(trainerDao.save(createTrainer(dto)));
   }
 
-  @Auth
   @Override
-  public TrainerDto update(TrainerDto dto) {
+  public TrainerDtoWithTrainees update(TrainerDto dto) {
     Optional<Trainer> storedTrainer = trainerDao.getByUsername(dto.getUsername());
     if (storedTrainer.isEmpty()){
       throw EntityNotFoundException.byUsername(dto.getUsername(), Trainer.class.getSimpleName());
     }
     updateTrainer(dto, storedTrainer.get());
-    return trainerMapper.toDto(trainerDao.save(storedTrainer.get()));
+    return trainerMapper.toDtoWithTrainees(trainerDao.save(storedTrainer.get()));
   }
 
-  @Auth
   @Override
   public void addTrainerToTrainee(UserCredentialsDto traineeCredentials, String trainerUsername) {
     Trainee trainee = traineeDao.getByUsername(traineeCredentials.getUsername())
@@ -75,19 +82,33 @@ public class TrainerServiceImpl implements TrainerService {
     traineeDao.save(trainee);
   }
 
-  @Auth
   @Override
   public List<TrainerDto> getTrainersNotAssignedToTrainee(UserCredentialsDto traineeCredentials) {
-    log.info("Seeking trainers, not assigned to user:{}", traineeCredentials.getUsername());
     Trainee trainee = traineeDao.getByUsername(traineeCredentials.getUsername())
         .orElseThrow(() -> EntityNotFoundException.byUsername(traineeCredentials.getUsername(), Trainee.class.getSimpleName()));
+    log.info("Seeking trainers, not assigned to user:{}", traineeCredentials.getUsername());
     return trainerMapper.toDtoList(trainerDao.getTrainersNotAssignedToTrainee(trainee));
+  }
+
+  @Override
+  public List<TrainerDto> updateTrainers(UpdateTrainersListDto dto) {
+    log.info("Started user:{} trainers update", dto.getUsername());
+    Trainee trainee = traineeDao.getByUsername(dto.getUsername())
+        .orElseThrow(() -> EntityNotFoundException.byUsername(dto.getUsername(), Trainee.class.getSimpleName()));
+    log.info("Started trainers seeking");
+    List<Trainer> trainers = dto.getTrainers().stream()
+        .map(trainer -> trainerDao.getByUsername(trainer).orElse(null))
+        .filter(Objects::nonNull)
+        .toList();
+    trainee.setTrainers(trainers);
+    traineeDao.save(trainee);
+    return trainerMapper.toDtoList(trainee.getTrainers());
   }
 
   private void updateTrainer(TrainerDto dto, Trainer entity) {
     log.info("Updating saved trainer from dto");
     trainerMapper.updateEntityFromDto(dto, entity);
-    entity.setSpecializations(trainingTypeService.getByName(dto.getSpecializations()));
+    entity.setSpecialization(trainingTypeService.getByName(dto.getSpecialization()));
     userService.update(dto, entity.getUser());
   }
 
@@ -95,7 +116,7 @@ public class TrainerServiceImpl implements TrainerService {
     log.info("Crating new trainer");
     return trainerMapper.toBuilder(dto)
         .user(userService.createUser(dto))
-        .specializations(trainingTypeService.getByName(dto.getSpecializations()))
+        .specialization(trainingTypeService.getByName(dto.getSpecialization()))
         .build();
   }
 }

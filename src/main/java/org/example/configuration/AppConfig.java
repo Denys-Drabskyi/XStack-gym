@@ -2,28 +2,39 @@ package org.example.configuration;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@EnableWebMvc
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages = "org.example")
 @PropertySource("classpath:application.properties")
-public class AppConfig {
+public class AppConfig implements WebMvcConfigurer {
   @Bean
   public ObjectMapper objectMapper(){
     return new ObjectMapper();
   }
 
+//  @Override
+//  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//    registry.addResourceHandler("swagger-ui.html")
+//        .addResourceLocations("classpath:/META-INF/resources/");
+//
+//    registry.addResourceHandler("/webjars/**")
+//        .addResourceLocations("classpath:/META-INF/resources/webjars/");
+//    WebMvcConfigurer.super.addResourceHandlers(registry);
+//  }
+
   @Bean
-  public Validator validatorFactory() {
-    return Validation.buildDefaultValidatorFactory().getValidator();
+  public LocalValidatorFactoryBean validator() {
+    return new LocalValidatorFactoryBean();
   }
 
 }

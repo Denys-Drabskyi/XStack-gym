@@ -1,23 +1,27 @@
 package org.example.dto;
 
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.UUID;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TrainingDto implements ValidatedDto {
-  private UUID trainingId;
-  private TraineeDto traineeDto;
-  private TrainerDto trainerDto;
-  @NotBlank(message = "Training name must not be blank")
+  @NotBlank(message = "Trainee username name must not be blank")
+  private String traineeUsername;
+  @NotBlank(message = "Trainer username name must not be blank")
+  private String trainerUsername;
+  @NotBlank(message = "Name name must not be blank")
   private String name;
+  @NotBlank(message = "Training type name must not be blank")
   private String trainingType;
   @NotNull(message = "Date must be present")
   @Future(message = "Date must be in future")

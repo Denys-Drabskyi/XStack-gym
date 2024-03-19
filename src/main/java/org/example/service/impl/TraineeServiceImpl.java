@@ -1,12 +1,13 @@
 package org.example.service.impl;
 
-import jakarta.transaction.Transactional;
+//import jakarta.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.example.aop.Auth;
 import org.example.dao.TraineeDao;
 import org.example.dto.TraineeDto;
+import org.example.dto.TraineeDtoWithTrainers;
 import org.example.dto.UserCredentialsDto;
 import org.example.entity.Trainee;
 import org.example.exception.EntityNotFoundException;
@@ -31,7 +32,6 @@ public class TraineeServiceImpl implements TraineeService {
     return traineeDao.existById(id);
   }
 
-  @Auth
   @Override
   public TraineeDto get(UserCredentialsDto credentials) {
     return traineeMapper.toDto(traineeDao.getByUsername(credentials.getUsername())
@@ -40,24 +40,30 @@ public class TraineeServiceImpl implements TraineeService {
   }
 
   @Override
+  public TraineeDtoWithTrainers getByUsername(String username) {
+    return traineeMapper.toDtoWithTrainers(traineeDao.getByUsername(username)
+        .orElseThrow(() -> EntityNotFoundException.byUsername(username, Trainee.class.getSimpleName())));
+  }
+
+  @Override
   @Transactional
   public TraineeDto create(TraineeDto dto) {
     return traineeMapper.toDto(traineeDao.save(createTrainee(dto)));
   }
 
-  @Auth
+
   @Override
   @Transactional
-  public TraineeDto update(TraineeDto dto) {
+  public TraineeDtoWithTrainers update(TraineeDto dto) {
     Optional<Trainee> storedTrainee = traineeDao.getByUsername(dto.getUsername());
     if (storedTrainee.isEmpty()){
       throw EntityNotFoundException.byUsername(dto.getUsername(), Trainee.class.getSimpleName());
     }
     updateTrainee(dto, storedTrainee.get());
-    return traineeMapper.toDto(traineeDao.save(storedTrainee.get()));
+    return traineeMapper.toDtoWithTrainers(traineeDao.save(storedTrainee.get()));
   }
 
-  @Auth
+
   @Override
   public void deleteByUsername(UserCredentialsDto credentials) {
     Optional<Trainee> trainee = traineeDao.getByUsername(credentials.getUsername());
