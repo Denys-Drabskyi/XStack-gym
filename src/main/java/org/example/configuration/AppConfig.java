@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages = "org.example")
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.yaml")
 public class AppConfig implements WebMvcConfigurer {
   @Bean
   public ObjectMapper objectMapper(){
@@ -32,9 +31,9 @@ public class AppConfig implements WebMvcConfigurer {
 //    WebMvcConfigurer.super.addResourceHandlers(registry);
 //  }
 
-  @Bean
-  public LocalValidatorFactoryBean validator() {
-    return new LocalValidatorFactoryBean();
-  }
+//  @Bean
+//  public LocalValidatorFactoryBean validator() {
+//    return new LocalValidatorFactoryBean();
+//  }
 
 }

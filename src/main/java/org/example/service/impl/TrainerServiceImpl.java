@@ -1,11 +1,9 @@
 package org.example.service.impl;
 
-//import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dao.TraineeDao;
 import org.example.dao.TrainerDao;
@@ -78,6 +76,7 @@ public class TrainerServiceImpl implements TrainerService {
         .orElseThrow(() -> EntityNotFoundException.byUsername(traineeCredentials.getUsername(), Trainee.class.getSimpleName()));
     Trainer trainer = trainerDao.getByUsername(trainerUsername)
         .orElseThrow(() -> EntityNotFoundException.byUsername(trainerUsername, Trainer.class.getSimpleName()));
+    log.info("Adding trainer with username:{} to trainee with username:{}", trainerUsername, traineeCredentials.getUsername());
     trainee.getTrainers().add(trainer);
     traineeDao.save(trainee);
   }
@@ -96,10 +95,7 @@ public class TrainerServiceImpl implements TrainerService {
     Trainee trainee = traineeDao.getByUsername(dto.getUsername())
         .orElseThrow(() -> EntityNotFoundException.byUsername(dto.getUsername(), Trainee.class.getSimpleName()));
     log.info("Started trainers seeking");
-    List<Trainer> trainers = dto.getTrainers().stream()
-        .map(trainer -> trainerDao.getByUsername(trainer).orElse(null))
-        .filter(Objects::nonNull)
-        .toList();
+    List<Trainer> trainers = trainerDao.getByUsernameIn(dto.getTrainers());
     trainee.setTrainers(trainers);
     traineeDao.save(trainee);
     return trainerMapper.toDtoList(trainee.getTrainers());

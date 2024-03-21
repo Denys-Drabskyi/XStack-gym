@@ -16,10 +16,14 @@ public class UserDao extends BasicDao<UUID, User, UserRepository> {
     super(repository, User.class.getSimpleName());
   }
 
+  public int activeUsers() {
+    return repository.countAllByActive(true);
+  }
+
   public Optional<User> getLastWithUserNamePattern(String username) {
     log.info("Started looking for users with username:{}", username);
     String pattern = String.format(SQL_LIKE, username);
-    return repository.findTopByUsernameLikeOrderByUsernameDesc(pattern);
+    return repository.lastWithPattern(pattern);
   }
 
   public Optional<User> getByUsername(String username) {

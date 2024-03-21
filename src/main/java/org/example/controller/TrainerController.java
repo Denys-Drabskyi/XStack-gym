@@ -1,9 +1,9 @@
 package org.example.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.validation.Valid;
 import java.util.Date;
 import java.util.List;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.aop.Auth;
 import org.example.dto.OnAuth;

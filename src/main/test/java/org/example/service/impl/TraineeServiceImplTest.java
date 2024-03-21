@@ -113,7 +113,7 @@ class TraineeServiceImplTest {
   void testCase13() {
     when(traineeDao.getByUsername(any())).thenReturn(Optional.of(TRAINEE));
 
-    service.getByUsername("username");
+    service.getWithTrainers("username");
     verify(traineeDao, times(1)).getByUsername(any());
   }
 }

@@ -1,9 +1,9 @@
 package org.example.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.validation.constraints.Past;
 import java.time.LocalDate;
 import java.util.UUID;
-import javax.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

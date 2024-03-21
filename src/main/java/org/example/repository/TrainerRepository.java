@@ -1,5 +1,6 @@
 package org.example.repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TrainerRepository extends JpaRepository<Trainer, UUID> {
   Optional<Trainer> getByUserUsername(String username);
+  List<Trainer> getTrainersByUser_UsernameIn(Collection<String> usernames);
   List<Trainer> getTrainersByTraineesNotContainingAndUserActive(Trainee trainees, boolean active);
 
   default List<Trainer> getTrainersNotAssignedToTrainee(Trainee trainee) {

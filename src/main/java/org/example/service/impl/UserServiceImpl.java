@@ -9,7 +9,6 @@ import org.example.dto.UserDto;
 import org.example.entity.User;
 import org.example.exception.EntityNotFoundException;
 import org.example.mapper.UserMapper;
-import org.example.repository.UserRepository;
 import org.example.service.UserService;
 import org.example.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User createUser(UserDto dto) {
+    log.info("Started new user creation");
     User user = userMapper.toBuilder(dto)
         .username(String.format("%s.%s", dto.getFirstName(), dto.getLastName()))
         .password(PasswordGenerator.generatePassword())
@@ -48,27 +48,31 @@ public class UserServiceImpl implements UserService {
     log.info("Updated user with id:{}", user.getId());
   }
 
-  public User getByUsername(String username){
+  public User getByUsername(String username) {
+    log.info("Getting user with username:{}", username);
     return  userDao.getByUsername(username)
         .orElseThrow(()-> EntityNotFoundException.byUsername(username, User.class.getSimpleName()));
   }
 
   @Override
-  public void updatePassword(PasswordChangeDto dto){
+  public void updatePassword(PasswordChangeDto dto) {
+    log.info("Updating password for user with username:{}", dto.getUsername());
     User user = getByUsername(dto.getUsername());
     user.setPassword(dto.getNewPassword());
     userDao.save(user);
   }
 
   @Override
-  public void changeActive(UserCredentialsDto dto){
+  public void changeActive(UserCredentialsDto dto) {
     User user = getByUsername(dto.getUsername());
+    log.info("Changing active status to:{} for user with username:{}", !user.isActive(), dto.getUsername());
     user.setActive(!user.isActive());
     userDao.save(user);
   }
 
   @Override
   public boolean auth(UserCredentialsDto dto) {
+    log.trace("Auth for user with username:{}", dto.getUsername());
     return userDao.existsByUsernameAndPasswordAndActive(dto.getUsername(), dto.getPassword(), true);
   }
 

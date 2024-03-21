@@ -1,7 +1,7 @@
 package org.example.controller;
 
+import jakarta.validation.Valid;
 import java.util.List;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.aop.Auth;
 import org.example.dto.OnAuth;

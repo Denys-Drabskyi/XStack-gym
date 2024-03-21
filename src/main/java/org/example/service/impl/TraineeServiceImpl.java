@@ -1,9 +1,8 @@
 package org.example.service.impl;
 
-//import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
-import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dao.TraineeDao;
 import org.example.dto.TraineeDto;
@@ -34,13 +33,15 @@ public class TraineeServiceImpl implements TraineeService {
 
   @Override
   public TraineeDto get(UserCredentialsDto credentials) {
+    log.info("Getting trainer with username:{}", credentials.getUsername());
     return traineeMapper.toDto(traineeDao.getByUsername(credentials.getUsername())
         .orElseThrow(() -> EntityNotFoundException.byUsername(credentials.getUsername(), Trainee.class.getSimpleName()))
     );
   }
 
   @Override
-  public TraineeDtoWithTrainers getByUsername(String username) {
+  public TraineeDtoWithTrainers getWithTrainers(String username) {
+    log.info("Getting trainer with username:{}", username);
     return traineeMapper.toDtoWithTrainers(traineeDao.getByUsername(username)
         .orElseThrow(() -> EntityNotFoundException.byUsername(username, Trainee.class.getSimpleName())));
   }
@@ -48,9 +49,9 @@ public class TraineeServiceImpl implements TraineeService {
   @Override
   @Transactional
   public TraineeDto create(TraineeDto dto) {
+    log.info("Started new trainer creation");
     return traineeMapper.toDto(traineeDao.save(createTrainee(dto)));
   }
-
 
   @Override
   @Transactional
@@ -63,9 +64,9 @@ public class TraineeServiceImpl implements TraineeService {
     return traineeMapper.toDtoWithTrainers(traineeDao.save(storedTrainee.get()));
   }
 
-
   @Override
   public void deleteByUsername(UserCredentialsDto credentials) {
+    log.info("Deleting trainee with username:{}", credentials.getUsername());
     Optional<Trainee> trainee = traineeDao.getByUsername(credentials.getUsername());
     trainee.ifPresent(value -> traineeDao.delete(value.getId()));
   }

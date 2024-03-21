@@ -10,7 +10,7 @@ public interface TraineeService {
 
   TraineeDto get(UserCredentialsDto credentials);
 
-  TraineeDtoWithTrainers getByUsername(String username);
+  TraineeDtoWithTrainers getWithTrainers(String username);
 
   TraineeDto create(TraineeDto dto);
 

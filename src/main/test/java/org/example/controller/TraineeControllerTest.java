@@ -47,10 +47,10 @@ class TraineeControllerTest {
   @Test
   @DisplayName("registerTrainee calls service")
   void testCase02() {
-    when(service.getByUsername(any())).thenReturn(null);
+    when(service.getWithTrainers(any())).thenReturn(null);
     controller.getTrainee(credentials, "username");
 
-    verify(service, times(1)).getByUsername(any());
+    verify(service, times(1)).getWithTrainers(any());
   }
 
   @Test

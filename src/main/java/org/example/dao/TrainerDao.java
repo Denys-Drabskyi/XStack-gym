@@ -16,6 +16,9 @@ public class TrainerDao extends BasicDao<UUID, Trainer, TrainerRepository> {
   public Optional<Trainer> getByUsername(String username) {
     return repository.getByUserUsername(username);
   }
+  public List<Trainer> getByUsernameIn(List<String> usernames) {
+    return repository.getTrainersByUser_UsernameIn(usernames);
+  }
 
   public List<Trainer> getTrainersNotAssignedToTrainee(Trainee trainee) {
     return repository.getTrainersNotAssignedToTrainee(trainee);

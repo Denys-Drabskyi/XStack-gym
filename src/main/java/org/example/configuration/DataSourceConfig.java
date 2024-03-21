@@ -1,8 +1,7 @@
 package org.example.configuration;
 
-//import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import java.util.Properties;
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.example.configuration.properties.DataSourceProperties;
@@ -51,7 +50,7 @@ public class DataSourceConfig {
 
     return factory;
   }
-  
+
   @Bean("transactionManager")
   protected PlatformTransactionManager transactionManager(
       EntityManagerFactory entityManagerFactory) {

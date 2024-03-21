@@ -5,11 +5,11 @@ import org.example.dto.TrainerDto;
 import org.example.dto.TrainerDtoWithTrainees;
 import org.example.dto.UserCredentialsDto;
 import org.example.entity.Trainer;
-import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, TrainingTypeMapper.class, TraineeMapper.class})
+//@Mapper(componentModel = "spring", uses = {UserMapper.class, TrainingTypeMapper.class, TraineeMapper.class})
 public interface TrainerMapper {
   Trainer.TrainerBuilder toBuilder(TrainerDto dto);
 

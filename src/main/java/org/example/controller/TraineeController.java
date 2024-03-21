@@ -1,9 +1,9 @@
 package org.example.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.validation.Valid;
 import java.util.Date;
 import java.util.List;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.aop.Auth;
 import org.example.dto.OnAuth;
@@ -52,7 +52,7 @@ public class TraineeController {
       @Validated(OnAuth.class) @RequestBody UserCredentialsDto credentials,
       @PathVariable("username") String username
   ) {
-    return ResponseEntity.ok(service.getByUsername(username));
+    return ResponseEntity.ok(service.getWithTrainers(username));
   }
 
   @Auth
@@ -92,7 +92,7 @@ public class TraineeController {
   }
 
   @Auth
-  @JsonView(Views.InList.class)
+//  @JsonView(Views.InList.class)
   @GetMapping("/trainings")
   public ResponseEntity<List<TrainingDto>> getTraineeTrainings(
       @Validated(OnAuth.class) @RequestBody UserCredentialsDto dto,
