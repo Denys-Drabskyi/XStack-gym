@@ -6,12 +6,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Optional;
 import java.util.UUID;
 import org.example.dao.TraineeDao;
 import org.example.dto.TraineeDto;
 import org.example.entity.Trainee;
-import org.example.exception.EntityNotFoundException;
+import org.example.entity.User;
 import org.example.mapper.TraineeMapper;
 import org.example.service.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +29,7 @@ class TraineeServiceImplTest {
   private UserService userService;
   @Mock
   private TraineeMapper traineeMapper;
-  private static final Trainee TRAINEE = Trainee.builder().build();
+  private static final Trainee TRAINEE = Trainee.builder().user(User.builder().username("test").build()).build();
   private static final TraineeDto DTO = TraineeDto.builder().build();
   private static final Trainee.TraineeBuilder BUILDER = Trainee.builder();
 
@@ -46,17 +45,9 @@ class TraineeServiceImplTest {
   }
 
   @Test
-  @DisplayName("get() throws EntityNotFoundException when there is no such trainee")
-  void testCase02() {
-    when(traineeDao.getByUsername(any())).thenReturn(Optional.empty());
-
-    assertThrows(EntityNotFoundException.class, () -> service.get(DTO));
-  }
-
-  @Test
   @DisplayName("getExistingById() returns trainee")
   void testCase03() {
-    when(traineeDao.getByUsername(any())).thenReturn(Optional.of(TRAINEE));
+    when(traineeDao.getByUsername(any())).thenReturn(TRAINEE);
     when(traineeMapper.toDto(TRAINEE)).thenReturn(DTO);
 
     assertEquals(DTO, service.get(DTO));
@@ -74,35 +65,18 @@ class TraineeServiceImplTest {
   }
 
   @Test
-  @DisplayName("update() throws EntityNotFoundException when there is no such trainee")
-  void testCase05() {
-    when(traineeDao.getByUsername(DTO.getUsername())).thenReturn(Optional.empty());
-
-    assertThrows(EntityNotFoundException.class, () -> service.update(DTO)) ;
-  }
-
-  @Test
   @DisplayName("update() updates trainee")
   void testCase06() {
-    when(traineeDao.getByUsername(DTO.getUsername())).thenReturn(Optional.of(TRAINEE));
+    when(traineeDao.getByUsername(DTO.getUsername())).thenReturn(TRAINEE);
 
     service.update(DTO);
     verify(traineeDao, times(1)).save(TRAINEE);
   }
 
   @Test
-  @DisplayName("deleteById() does nothing if there already are no such trainee")
-  void testCase07() {
-    when(traineeDao.getByUsername(any())).thenReturn(Optional.empty());
-
-    service.deleteByUsername(DTO);
-    verify(traineeDao, times(0)).delete(any());
-  }
-
-  @Test
   @DisplayName("deleteById() delete trainee")
   void testCase12() {
-    when(traineeDao.getByUsername(any())).thenReturn(Optional.of(TRAINEE));
+    when(traineeDao.getByUsername(any())).thenReturn(TRAINEE);
 
     service.deleteByUsername(DTO);
     verify(traineeDao, times(1)).delete(any());
@@ -111,7 +85,7 @@ class TraineeServiceImplTest {
   @Test
   @DisplayName("getByUsername() delete trainee")
   void testCase13() {
-    when(traineeDao.getByUsername(any())).thenReturn(Optional.of(TRAINEE));
+    when(traineeDao.getByUsername(any())).thenReturn(TRAINEE);
 
     service.getWithTrainers("username");
     verify(traineeDao, times(1)).getByUsername(any());

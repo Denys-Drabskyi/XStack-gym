@@ -1,7 +1,5 @@
 package org.example.service.impl;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,23 +17,10 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
   private final TrainingTypeRepository repository;
 
   @Override
-  public List<TrainingType> getByName(Collection<String> names) {
-    log.info("Getting training types by names");
-    List<TrainingType> types = repository.getByNameIn(names);
-    if (types.size() != names.size()) {
-      List<String> diff = names.stream().filter(name -> !getTypes().removeIf(type -> type.getName().equals(name)))
-          .toList();
-
-      throw EntityNotFoundException.types(diff);
-    }
-    return types;
-  }
-
-  @Override
   public TrainingType getByName(String name) {
     log.info("Getting training type with name:{}", name);
     return repository.getByName(name)
-        .orElseThrow(() -> EntityNotFoundException.types(Collections.singletonList(name)));
+        .orElseThrow(() -> EntityNotFoundException.type(name));
   }
 
   @Override

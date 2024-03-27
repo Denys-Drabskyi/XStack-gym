@@ -3,7 +3,7 @@ package org.example.mapper;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.UUID;
-import org.example.TestConfig;
+import org.example.Main;
 import org.example.dto.TrainerDto;
 import org.example.dto.UserCredentialsDto;
 import org.example.entity.Trainer;
@@ -11,15 +11,10 @@ import org.example.entity.TrainingType;
 import org.example.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@WebAppConfiguration
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestConfig.class})
+@SpringBootTest(classes = Main.class)
 class TrainerMapperTest {
 
   @Autowired

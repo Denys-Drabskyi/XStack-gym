@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
         .password(PasswordGenerator.generatePassword())
         .active(true)
         .build();
-    log.info("Checking if username:{} is available", dto.getUsername());
+    log.info("Checking if username:{} is available", user.getUsername());
     updateUsernameIfAlreadyExists(user);
     return userDao.save(user);
   }

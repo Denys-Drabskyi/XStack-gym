@@ -36,6 +36,7 @@ class BasicDaoTest {
   @Test
   @DisplayName("save() with argument should save it")
   void testCase02() {
+    when(repository.save(entity)).thenReturn(entity);
     dao.save(entity);
     verify(repository, times(1)).save(any());
   }

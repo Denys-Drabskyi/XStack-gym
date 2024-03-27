@@ -5,7 +5,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,16 +25,6 @@ class TrainingTypeServiceImplTest {
 
   @InjectMocks
   private TrainingTypeServiceImpl trainingTypeService;
-
-  @Test
-  @DisplayName("getByName(collection<string>) test")
-  void testCase01() {
-    ArrayList<String> names = new ArrayList<>();
-    when(repository.getByNameIn(any())).thenReturn(new ArrayList<>());
-
-    trainingTypeService.getByName(names);
-    verify(repository, times(1)).getByNameIn(names);
-  }
 
   @Test
   @DisplayName("getByName(string) test")

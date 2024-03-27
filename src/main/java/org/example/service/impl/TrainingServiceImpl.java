@@ -9,8 +9,6 @@ import org.example.dao.TrainerDao;
 import org.example.dao.TrainingDao;
 import org.example.dto.TrainingDto;
 import org.example.entity.Training;
-import org.example.entity.TrainingType;
-import org.example.exception.EntityNotFoundException;
 import org.example.mapper.TrainingMapper;
 import org.example.service.TrainingService;
 import org.example.service.TrainingTypeService;
@@ -23,9 +21,9 @@ public class TrainingServiceImpl implements TrainingService {
   @Autowired
   private TrainingDao trainingDao;
   @Autowired
-  private TrainerDao trainerService;
+  private TrainerDao trainerDao;
   @Autowired
-  private TraineeDao traineeService;
+  private TraineeDao traineeDao;
   @Autowired
   private TrainingMapper trainingMapper;
   @Autowired
@@ -33,22 +31,20 @@ public class TrainingServiceImpl implements TrainingService {
 
   @Override
   public TrainingDto create(TrainingDto dto) {
-    Training training = trainingMapper.toEntity(dto);
-    training.setTrainee(traineeService.getByUsername(dto.getTraineeUsername()).orElseThrow());
-    training.setTrainer(trainerService.getByUsername(dto.getTrainerUsername()).orElseThrow());
-    TrainingType trainingType = trainingTypeService.getByName(dto.getTrainingType());
-    if (trainingType == null) {
-      throw EntityNotFoundException.types(List.of(dto.getTrainingType()));
-    }
     log.info("Creating new training for trainee with username:{} with trainer:{}", dto.getTraineeUsername(), dto.getTrainerUsername());
-    training.setType(trainingType);
-    return trainingMapper.toDto(trainingDao.save(training));
+    Training training = trainingMapper.toEntity(dto);
+    training.setTrainee(traineeDao.getByUsername(dto.getTraineeUsername()));
+    training.setTrainer(trainerDao.getByUsername(dto.getTrainerUsername()));
+    training.setType(trainingTypeService.getByName(dto.getTrainingType()));
+    training = trainingDao.save(training);
+    log.info("Created new training for trainee with username:{} with trainer:{}", dto.getTraineeUsername(), dto.getTrainerUsername());
+    return trainingMapper.toDto(training);
   }
 
   @Override
   public List<TrainingDto> getTraineeTrainingListByTrainerAndDateBetween
       (String traineeUsername, Collection<String> trainerUsernames, Date from, Date to) {
-    log.info("Getting trainee with username:{} trainers list", traineeUsername);
+    log.info("Getting trainee with username:{} trainings list", traineeUsername);
     return trainingMapper.toDtoList(trainingDao.getTraineeTrainingListByTrainerAndDateBetween(traineeUsername, trainerUsernames, from, to));
   }
 
@@ -57,5 +53,14 @@ public class TrainingServiceImpl implements TrainingService {
       (String trainerUsername, Collection<String> traineeUsernames, Date from, Date to) {
     log.info("Getting trainer with username:{} trainees list", trainerUsername);
     return trainingMapper.toDtoList(trainingDao.getTrainerTrainingListByTraineeAndDateBetween(trainerUsername, traineeUsernames, from, to));
+  }
+
+  @Override
+  public double getAverageTrainerTrainingsCount() {
+    return trainerDao.findAll().stream()
+        .map(trainer ->  trainingDao.countTrainerTrainings(trainer.getUser().getUsername()))
+        .mapToInt(Integer::intValue)
+        .average()
+        .orElse(0.0);
   }
 }

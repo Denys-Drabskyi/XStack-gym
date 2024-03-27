@@ -10,9 +10,13 @@ import org.example.entity.User;
 import org.example.util.PasswordGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class TraineeMapperTest {
-  private final TraineeMapperImpl mapper = new TraineeMapperImpl();
+  @Autowired
+  private TraineeMapper mapper;
   private static final User USER = User.builder()
       .id(UUID.randomUUID())
       .firstName("firstname")

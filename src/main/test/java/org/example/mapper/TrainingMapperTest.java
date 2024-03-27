@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.UUID;
-import org.example.TestConfig;
 import org.example.dto.TrainingDto;
 import org.example.entity.Trainee;
 import org.example.entity.Trainer;
@@ -15,15 +14,10 @@ import org.example.entity.TrainingType;
 import org.example.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@WebAppConfiguration
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestConfig.class})
+@SpringBootTest
 class TrainingMapperTest {
 
   @Autowired

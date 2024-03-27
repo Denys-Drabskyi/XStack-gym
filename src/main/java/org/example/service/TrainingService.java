@@ -13,4 +13,6 @@ public interface TrainingService {
 
   List<TrainingDto> getTrainerTrainingListByTraineeAndDateBetween
       (String trainerUsername, Collection<String> traineeUsernames, Date from, Date to);
+
+  double getAverageTrainerTrainingsCount();
 }

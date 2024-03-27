@@ -17,14 +17,25 @@ public class TrainingDao extends BasicDao<UUID, Training, TrainingRepository> {
     super(repository, Training.class.getSimpleName());
   }
 
+  private final String message = """
+      Started {} trainings with:
+        date from:\t{},
+        date to:  \t{},
+        {}: \t{}
+      """;
+
   public List<Training> getTraineeTrainingListByTrainerAndDateBetween
       (String traineeUsername, Collection<String> trainerUsernames, Date from, Date to) {
-    log.info("Started {} trainings with filter searching", traineeUsername);
+    log.debug(message, traineeUsername, from, to, "trainers", trainerUsernames);
     return repository.getTraineeTrainingListByTrainerAndDateBetween(traineeUsername, trainerUsernames, from, to);
   }
   public List<Training> getTrainerTrainingListByTraineeAndDateBetween
       (String trainerUsername, Collection<String> traineeUsernames, Date from, Date to) {
-    log.info("Started {} trainings with filter searching", trainerUsername);
+    log.debug(message, trainerUsername, from, to, "trainees", traineeUsernames);
     return repository.getTrainerTrainingListByTraineeAndDateBetween(trainerUsername, traineeUsernames, from, to);
+  }
+
+  public int countTrainerTrainings(String trainerUsername) {
+    return repository.countAllByTrainerUserUsername(trainerUsername);
   }
 }

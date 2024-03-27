@@ -21,7 +21,7 @@ public class UserDao extends BasicDao<UUID, User, UserRepository> {
   }
 
   public Optional<User> getLastWithUserNamePattern(String username) {
-    log.info("Started looking for users with username:{}", username);
+    log.info("Started looking for users with username like:{}", username);
     String pattern = String.format(SQL_LIKE, username);
     return repository.lastWithPattern(pattern);
   }

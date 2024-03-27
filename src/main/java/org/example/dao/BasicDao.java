@@ -15,9 +15,9 @@ public abstract class BasicDao<ID, T extends IdEntity<ID>, R extends JpaReposito
 
   @Override
   public T save(T entity) {
-    Objects.requireNonNull(entity, String.format("%s must not be null", entityName));
-    log.info("Saving {} with id: {}", entityName, entity.getId());
-    return repository.save(entity);
+    T rez = repository.save(entity);
+    log.info("Saved {} with id: {}", entityName, rez.getId());
+    return rez;
   }
 
   @Override

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
 import java.util.List;
-import org.example.TestConfig;
 import org.example.controller.TraineeController;
 import org.example.controller.TrainerController;
 import org.example.controller.TrainingController;
@@ -17,16 +16,11 @@ import org.example.dto.UserCredentialsDto;
 import org.example.exception.AuthFailedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
 
-@WebAppConfiguration
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestConfig.class})
+@SpringBootTest
 class AuthAspectTest {
 
   private static final UserCredentialsDto credentials = UserCredentialsDto.builder().build();

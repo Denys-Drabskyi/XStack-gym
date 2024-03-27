@@ -18,6 +18,7 @@ public interface TrainingRepository extends JpaRepository<Training, UUID> {
                                                                                 Collection<String> trainee_user_username,
                                                                                 Date date, Date date2);
 
+  int countAllByTrainerUserUsername(String trainerUsername);
   default List<Training> getTraineeTrainingListByTrainerAndDateBetween
       (String traineeUsername, Collection<String> trainerUsernames, Date from, Date to) {
     return getByTraineeUserUsernameAndTrainerUserUsernameInAndDateBetween(traineeUsername, trainerUsernames, from, to);

@@ -29,5 +29,6 @@ public class AuthAspect {
       log.error("User:{} is not authenticated", credentialsDto.getUsername());
       throw AuthFailedException.forUser(credentialsDto);
     }
+    log.debug("user:{} auth succ", credentialsDto.getUsername());
   }
 }

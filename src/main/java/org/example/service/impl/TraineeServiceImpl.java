@@ -1,7 +1,6 @@
 package org.example.service.impl;
 
 import jakarta.transaction.Transactional;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dao.TraineeDao;
@@ -9,7 +8,6 @@ import org.example.dto.TraineeDto;
 import org.example.dto.TraineeDtoWithTrainers;
 import org.example.dto.UserCredentialsDto;
 import org.example.entity.Trainee;
-import org.example.exception.EntityNotFoundException;
 import org.example.mapper.TraineeMapper;
 import org.example.service.TraineeService;
 import org.example.service.UserService;
@@ -33,53 +31,45 @@ public class TraineeServiceImpl implements TraineeService {
 
   @Override
   public TraineeDto get(UserCredentialsDto credentials) {
-    log.info("Getting trainer with username:{}", credentials.getUsername());
-    return traineeMapper.toDto(traineeDao.getByUsername(credentials.getUsername())
-        .orElseThrow(() -> EntityNotFoundException.byUsername(credentials.getUsername(), Trainee.class.getSimpleName()))
-    );
+    return traineeMapper.toDto(traineeDao.getByUsername(credentials.getUsername()));
   }
 
   @Override
   public TraineeDtoWithTrainers getWithTrainers(String username) {
-    log.info("Getting trainer with username:{}", username);
-    return traineeMapper.toDtoWithTrainers(traineeDao.getByUsername(username)
-        .orElseThrow(() -> EntityNotFoundException.byUsername(username, Trainee.class.getSimpleName())));
+    return traineeMapper.toDtoWithTrainers(traineeDao.getByUsername(username));
   }
 
   @Override
   @Transactional
   public TraineeDto create(TraineeDto dto) {
-    log.info("Started new trainer creation");
-    return traineeMapper.toDto(traineeDao.save(createTrainee(dto)));
+    log.info("Started new trainee creation");
+    Trainee rez = traineeMapper.toBuilder(dto)
+        .user(userService.createUser(dto))
+        .build();
+    rez = traineeDao.save(rez);
+    log.info("Created new trainee with username:{}", rez.getUser().getUsername());
+    return traineeMapper.toDto(rez);
   }
 
   @Override
   @Transactional
   public TraineeDtoWithTrainers update(TraineeDto dto) {
-    Optional<Trainee> storedTrainee = traineeDao.getByUsername(dto.getUsername());
-    if (storedTrainee.isEmpty()){
-      throw EntityNotFoundException.byUsername(dto.getUsername(), Trainee.class.getSimpleName());
-    }
-    updateTrainee(dto, storedTrainee.get());
-    return traineeMapper.toDtoWithTrainers(traineeDao.save(storedTrainee.get()));
+    Trainee storedTrainee = traineeDao.getByUsername(dto.getUsername());
+
+    log.info("Updating existing trainee with username:{} from dto", dto.getUsername());
+    traineeMapper.updateEntityFromDto(dto, storedTrainee);
+    userService.update(dto, storedTrainee.getUser());
+    traineeDao.save(storedTrainee);
+    log.info("Updated existing trainee with username:{}", dto.getUsername());
+
+    return traineeMapper.toDtoWithTrainers(storedTrainee);
   }
 
   @Override
   public void deleteByUsername(UserCredentialsDto credentials) {
     log.info("Deleting trainee with username:{}", credentials.getUsername());
-    Optional<Trainee> trainee = traineeDao.getByUsername(credentials.getUsername());
-    trainee.ifPresent(value -> traineeDao.delete(value.getId()));
-  }
-
-  private void updateTrainee(TraineeDto dto, Trainee entity) {
-    log.info("Updating saved trainee from dto");
-    traineeMapper.updateEntityFromDto(dto, entity);
-    userService.update(dto, entity.getUser());
-  }
-
-  private Trainee createTrainee(TraineeDto dto) {
-    return traineeMapper.toBuilder(dto)
-        .user(userService.createUser(dto))
-        .build();
+    Trainee trainee = traineeDao.getByUsername(credentials.getUsername());
+    traineeDao.delete(trainee.getId());
+    log.info("Deleted trainee with username:{}", credentials.getUsername());
   }
 }
