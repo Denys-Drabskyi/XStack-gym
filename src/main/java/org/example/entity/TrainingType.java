@@ -1,16 +1,26 @@
 package org.example.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
-public enum TrainingType {
-  TYPE_1("type1", UUID.fromString("25c49575-a9eb-483f-b3bd-a35a39d6849b")),
-  TYPE_2("type2", UUID.fromString("25c49575-a9eb-483f-b3bd-a35a39d6849c")),
-  TYPE_3("type3", UUID.fromString("25c49575-a9eb-483f-b3bd-a35a39d6849d"));
+@Data
+@Entity
+@NoArgsConstructor
+public class TrainingType {
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
+  @Column(nullable = false, unique = true)
+  private String name;
 
-  private final String name;
-  private final UUID id;
+  public TrainingType(UUID id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 }
