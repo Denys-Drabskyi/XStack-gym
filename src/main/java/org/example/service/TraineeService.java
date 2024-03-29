@@ -16,5 +16,5 @@ public interface TraineeService {
 
   TraineeDtoWithTrainers update(TraineeDto dto);
 
-  void deleteByUsername(UserCredentialsDto credentials);
+  void deleteByUsername(String username);
 }

@@ -50,7 +50,7 @@ public class TrainerServiceImpl implements TrainerService {
 
   @Override
   @Transactional
-  public UserCredentialsDto create(TrainerDto dto) {
+  public TrainerDto create(TrainerDto dto) {
     log.info("Started new trainer creation");
     Trainer rez = trainerMapper.toBuilder(dto)
         .user(userService.createUser(dto))
@@ -58,7 +58,7 @@ public class TrainerServiceImpl implements TrainerService {
         .build();
     rez = trainerDao.save(rez);
     log.info("Created new trainer with username:{}", rez.getUser().getUsername());
-    return trainerMapper.toCredentials(rez);
+    return trainerMapper.toDto(rez);
   }
 
   @Override
@@ -86,8 +86,8 @@ public class TrainerServiceImpl implements TrainerService {
   }
 
   @Override
-  public List<TrainerDto> getTrainersNotAssignedToTrainee(UserCredentialsDto traineeCredentials) {
-    Trainee trainee = traineeDao.getByUsername(traineeCredentials.getUsername());
+  public List<TrainerDto> getTrainersNotAssignedToTrainee(String username) {
+    Trainee trainee = traineeDao.getByUsername(username);
     return trainerMapper.toDtoList(trainerDao.getTrainersNotAssignedToTrainee(trainee));
   }
 

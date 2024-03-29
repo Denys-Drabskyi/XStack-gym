@@ -14,13 +14,13 @@ public interface TrainerService {
 
   TrainerDtoWithTrainees getByUsername(String username);
 
-  UserCredentialsDto create(TrainerDto trainer);
+  TrainerDto create(TrainerDto trainer);
 
   TrainerDtoWithTrainees update(TrainerDto trainer);
 
   void addTrainerToTrainee(UserCredentialsDto traineeCredentials, String trainerUsername);
 
-  List<TrainerDto> getTrainersNotAssignedToTrainee(UserCredentialsDto credentials);
+  List<TrainerDto> getTrainersNotAssignedToTrainee(String username);
 
   List<TrainerDto> updateTrainers(UpdateTrainersListDto dto);
 }

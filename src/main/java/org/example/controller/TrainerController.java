@@ -5,19 +5,19 @@ import jakarta.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.aop.Auth;
-import org.example.dto.OnAuth;
 import org.example.dto.TrainerDto;
 import org.example.dto.TrainerDtoWithTrainees;
 import org.example.dto.TrainingDto;
 import org.example.dto.UserCredentialsDto;
 import org.example.dto.Views;
+import org.example.service.AuthService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,49 +33,45 @@ import org.springframework.web.bind.annotation.RestController;
 public class TrainerController {
   private final TrainerService service;
   private final TrainingService trainingService;
+  private final AuthService authService;
 
   @JsonView(Views.Credentials.class)
   @PostMapping("/register")
   public ResponseEntity<UserCredentialsDto> registerTrainer(@Valid @RequestBody TrainerDto dto) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
+    return ResponseEntity.status(HttpStatus.CREATED).body(authService.createTrainer(dto));
   }
 
-  @Auth
   @JsonView(Views.PublicTrainer.class)
   @GetMapping("/{username}")
   public ResponseEntity<TrainerDtoWithTrainees> getTrainer(
-      @Validated(OnAuth.class) @RequestBody UserCredentialsDto credentials,
       @PathVariable("username") String username
   ) {
     return ResponseEntity.ok(service.getByUsername(username));
   }
 
-  @Auth
   @JsonView(Views.PublicTrainer.class)
   @PutMapping
   public ResponseEntity<TrainerDtoWithTrainees> updateTrainer(
-      @Validated(OnAuth.class) @RequestBody TrainerDto dto
+      @Valid @RequestBody TrainerDto dto
   ) {
     return ResponseEntity.ok(service.update(dto));
   }
 
-  @Auth
   @JsonView(Views.InList.class)
   @GetMapping("/unassigned")
   public ResponseEntity<List<TrainerDto>> getUnassignedTrainers(
-      @Validated(OnAuth.class) @RequestBody UserCredentialsDto dto
+      @AuthenticationPrincipal UserDetails userDetails
   ) {
-    return ResponseEntity.ok(service.getTrainersNotAssignedToTrainee(dto));
+    return ResponseEntity.ok(service.getTrainersNotAssignedToTrainee(userDetails.getUsername()));
   }
 
-  @Auth
   @GetMapping("/trainings")
   public ResponseEntity<List<TrainingDto>> getTrainerTrainings(
-      @Validated(OnAuth.class) @RequestBody UserCredentialsDto dto,
+      @AuthenticationPrincipal UserDetails userDetails,
       @RequestParam("trainers") List<String> trainers,
       @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date from,
       @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date to
   ) {
-    return ResponseEntity.ok(trainingService.getTrainerTrainingListByTraineeAndDateBetween(dto.getUsername(), trainers, from, to));
+    return ResponseEntity.ok(trainingService.getTrainerTrainingListByTraineeAndDateBetween(userDetails.getUsername(), trainers, from, to));
   }
 }

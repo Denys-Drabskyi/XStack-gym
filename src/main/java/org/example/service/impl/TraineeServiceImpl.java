@@ -66,10 +66,10 @@ public class TraineeServiceImpl implements TraineeService {
   }
 
   @Override
-  public void deleteByUsername(UserCredentialsDto credentials) {
-    log.info("Deleting trainee with username:{}", credentials.getUsername());
-    Trainee trainee = traineeDao.getByUsername(credentials.getUsername());
+  public void deleteByUsername(String username) {
+    log.info("Deleting trainee with username:{}", username);
+    Trainee trainee = traineeDao.getByUsername(username);
     traineeDao.delete(trainee.getId());
-    log.info("Deleted trainee with username:{}", credentials.getUsername());
+    log.info("Deleted trainee with username:{}", username);
   }
 }
