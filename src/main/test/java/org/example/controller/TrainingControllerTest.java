@@ -41,7 +41,7 @@ class TrainingControllerTest {
   @DisplayName("getTypes calls service")
   void testCase02() {
     when(trainingTypeService.getTypes()).thenReturn(null);
-    controller.getTypes(credentialsDto);
+    controller.getTypes();
 
     verify(trainingTypeService, times(1)).getTypes();
   }

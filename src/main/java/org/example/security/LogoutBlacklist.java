@@ -1,4 +1,4 @@
-package org.example.configuration.security;
+package org.example.security;
 
 import com.google.common.cache.LoadingCache;
 import lombok.RequiredArgsConstructor;

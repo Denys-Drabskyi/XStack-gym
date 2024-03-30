@@ -1,19 +1,23 @@
-package org.example.configuration.security;
+package org.example.security;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
 @RequiredArgsConstructor
-public class CustomLogoutHandler implements LogoutHandler {
+public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
   private final LogoutBlacklist blacklist;
+
   @Override
-  public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+  public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+                              Authentication authentication) throws IOException, ServletException {
     if (authentication != null && authentication.getDetails() != null) {
       try {
         String authorizationHeader = request.getHeader("Authorization");

@@ -2,7 +2,6 @@ package org.example.service.impl;
 
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.example.configuration.security.BruteForceBlacklist;
 import org.example.dao.UserDao;
 import org.example.dto.PasswordChangeDto;
 import org.example.dto.UserDto;

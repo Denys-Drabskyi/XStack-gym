@@ -6,11 +6,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Date;
-import java.util.List;
 import org.example.dto.TraineeDto;
 import org.example.dto.UpdateTrainersListDto;
 import org.example.dto.UserCredentialsDto;
+import org.example.entity.User;
+import org.example.service.AuthService;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
@@ -26,6 +26,8 @@ class TraineeControllerTest {
   @Mock
   private TraineeService service;
   @Mock
+  private AuthService authService;
+  @Mock
   private TrainingService trainingService;
   @Mock
   private TrainerService trainerService;
@@ -38,17 +40,17 @@ class TraineeControllerTest {
   @Test
   @DisplayName("registerTrainee calls service")
   void testCase01() {
-    when(service.create(any())).thenReturn(null);
+    when(authService.createTrainee(any())).thenReturn(null);
     controller.registerTrainee(dto);
 
-    verify(service, times(1)).create(dto);
+    verify(authService, times(1)).createTrainee(dto);
   }
 
   @Test
   @DisplayName("registerTrainee calls service")
   void testCase02() {
     when(service.getWithTrainers(any())).thenReturn(null);
-    controller.getTrainee(credentials, "username");
+    controller.getTrainee("username");
 
     verify(service, times(1)).getWithTrainers(any());
   }
@@ -66,7 +68,7 @@ class TraineeControllerTest {
   @DisplayName("deleteTrainee calls service")
   void testCase04() {
     doNothing().when(service).deleteByUsername(any());
-    controller.deleteTrainee(dto);
+    controller.deleteTrainee(User.builder().username("test").build());
 
     verify(service, times(1)).deleteByUsername(any());
   }
@@ -74,29 +76,21 @@ class TraineeControllerTest {
   @Test
   @DisplayName("updateTraineesTrainers calls service")
   void testCase05() {
-    when(trainerService.updateTrainers(any())).thenReturn(null);
-    controller.updateTraineesTrainers(UpdateTrainersListDto.builder().build());
+    when(trainerService.updateTrainers(any(), any())).thenReturn(null);
+    controller.updateTraineesTrainers(User.builder().username("").build(), UpdateTrainersListDto.builder().build());
 
-    verify(trainerService, times(1)).updateTrainers(any());
+    verify(trainerService, times(1)).updateTrainers(any(), any());
   }
 
   @Test
   @DisplayName("getNotAssignedActiveTrainers calls service")
   void testCase06() {
     when(trainerService.getTrainersNotAssignedToTrainee(any())).thenReturn(null);
-    controller.getNotAssignedActiveTrainers(UpdateTrainersListDto.builder().build());
+    controller.getNotAssignedActiveTrainers(User.builder().username("test").build());
 
     verify(trainerService, times(1)).getTrainersNotAssignedToTrainee(any());
   }
 
-  @Test
-  @DisplayName("getTraineeTrainings calls service")
-  void testCase07() {
-    when(trainingService.getTraineeTrainingListByTrainerAndDateBetween(any(), any(), any(), any())).thenReturn(null);
-    controller.getTraineeTrainings(credentials, List.of(), new Date(), new Date());
-
-    verify(trainingService, times(1)).getTraineeTrainingListByTrainerAndDateBetween(any(), any(), any(), any());
-  }
-
 
 }
+

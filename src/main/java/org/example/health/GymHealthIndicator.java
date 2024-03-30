@@ -1,4 +1,4 @@
-package org.example.configuration.health;
+package org.example.health;
 
 import java.util.HashMap;
 import java.util.Map;

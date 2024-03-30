@@ -75,9 +75,10 @@ public class TraineeController {
   @JsonView(Views.InList.class)
   @PutMapping("/trainer")
   public ResponseEntity<List<TrainerDto>> updateTraineesTrainers(
-      @Validated(OnAuth.class) @RequestBody UpdateTrainersListDto dto
+      @AuthenticationPrincipal UserDetails userDetails,
+      @RequestBody UpdateTrainersListDto dto
   ) {
-    return ResponseEntity.ok(trainerService.updateTrainers(dto));
+    return ResponseEntity.ok(trainerService.updateTrainers(userDetails.getUsername(), dto));
   }
 
   @JsonView(Views.InList.class)

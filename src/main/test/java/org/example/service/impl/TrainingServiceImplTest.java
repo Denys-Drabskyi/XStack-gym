@@ -1,71 +1,86 @@
 package org.example.service.impl;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-import org.example.dao.TrainingDao;
-import org.example.dto.TraineeDto;
-import org.example.dto.TrainerDto;
+import java.util.stream.Stream;
 import org.example.dto.TrainingDto;
-import org.example.entity.Training;
-import org.example.entity.TrainingType;
-import org.example.mapper.TrainingMapper;
-import org.example.service.TraineeService;
-import org.example.service.TrainerService;
-import org.example.service.TrainingTypeService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class TrainingServiceImplTest {
-
-  @Mock
-  private TrainingDao trainingDao;
-  @Mock
-  private TrainerService trainerService;
-  @Mock
-  private TraineeService traineeService;
-  @Mock
-  private TrainingMapper trainingMapper;
-  @Mock
-  private TrainingTypeService trainingTypeService;
-
-  @InjectMocks
+  @Autowired
   private TrainingServiceImpl service;
-  private static final TraineeDto TRAINEE_DTO = TraineeDto.builder().username("test").id(UUID.randomUUID()).build();
-  private static final TrainerDto TRAINER_DTO = TrainerDto.builder().username("test").id(UUID.randomUUID()).build();
-  private static final Training TRAINING = Training.builder().build();
-  private static final TrainingDto DTO = TrainingDto.builder()
-      .traineeUsername("traineeUsername")
-      .trainerUsername("trainerUsername")
-      .trainingType("test")
+  private final TrainingDto trainingDto = TrainingDto.builder()
+      .duration(3600)
+      .name("name")
+      .trainerUsername("trainer.trainer")
+      .traineeUsername("trainee.trainee")
+      .trainingType("Cardio")
+      .date(LocalDate.of(2040, 10, 5))
       .build();
-  private static final TrainingType TRAINING_TYPE = new TrainingType(UUID.randomUUID(), "test");
 
   @Test
-  @DisplayName("getTraineeTrainingListByTrainerAndDateBetween() test")
+  @DisplayName("create() test")
   void testCase01() {
-    when(trainingDao.getTraineeTrainingListByTrainerAndDateBetween(anyString(), any(), any(),any())).thenReturn(new ArrayList<>());
-    service.getTraineeTrainingListByTrainerAndDateBetween("traineeUsername", List.of("test"), new Date(), new Date());
-    verify(trainingDao, times(1)).getTraineeTrainingListByTrainerAndDateBetween(anyString(), any(), any(), any());
+    TrainingDto rez = service.create(trainingDto);
+    assertEquals(trainingDto.getTrainingType(), rez.getTrainingType());
+    assertEquals(trainingDto.getDuration(), rez.getDuration());
+    assertEquals(trainingDto.getDate(), rez.getDate());
+    assertEquals(trainingDto.getName(), rez.getName());
+    assertEquals(trainingDto.getTrainerUsername(), rez.getTrainerUsername());
+    assertEquals(trainingDto.getTraineeUsername(), rez.getTraineeUsername());
+  }
+
+  @ParameterizedTest
+  @MethodSource("testCase02Source")
+  @DisplayName("getTraineeTrainingListByTrainerAndDateBetween() test")
+  void testCase02(List<LocalDate> expected, String traineeUsername, Collection<String> trainerUsernames, Date from, Date to) {
+    List<TrainingDto> rez = service.getTraineeTrainingListByTrainerAndDateBetween(traineeUsername, trainerUsernames, from, to);
+    List<LocalDate> rezDates = rez.stream().map(TrainingDto::getDate).toList();
+    assertEquals(expected.size(), rez.size());
+    assertTrue(expected.containsAll(rezDates));
+  }
+
+  // TODO: 3/30/2024 знайти як Date створювати
+  public static Stream<Arguments> testCase02Source() {
+    return Stream.of(
+        Arguments.of(List.of(), "trainee.trainee", List.of(), Date.from(Instant.now()),  Date.from(Instant.now()))
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("testCase03Source")
+  @DisplayName("getTrainerTrainingListByTraineeAndDateBetween() test")
+  void testCase03(List<LocalDate> expected, String trainerUsername, Collection<String> traineeUsernames, Date from, Date to) {
+    List<TrainingDto> rez = service.getTrainerTrainingListByTraineeAndDateBetween(trainerUsername, traineeUsernames, from, to);
+    List<LocalDate> rezDates = rez.stream().map(TrainingDto::getDate).toList();
+    assertEquals(expected.size(), rez.size());
+    assertTrue(expected.containsAll(rezDates));
+  }
+
+  // TODO: 3/30/2024 знайти як Date створювати
+  public static Stream<Arguments> testCase03Source() {
+    return Stream.of(
+        Arguments.of(List.of(), "trainee.trainee", List.of(), Date.from(Instant.now()),  Date.from(Instant.now()))
+    );
   }
 
   @Test
-  @DisplayName("getTraineeTrainingListByTrainerAndDateBetween() test")
-  void testCase02() {
-    when(trainingDao.getTrainerTrainingListByTraineeAndDateBetween(anyString(), any(), any(),any())).thenReturn(new ArrayList<>());
-    service.getTrainerTrainingListByTraineeAndDateBetween("trainerUsername", List.of("test"), new Date(), new Date());
-    verify(trainingDao, times(1)).getTrainerTrainingListByTraineeAndDateBetween(anyString(), any(), any(), any());
+  void testCase04() {
+    assertEquals(2 / 3.0, service.getAverageTrainerTrainingsCount());
   }
 }

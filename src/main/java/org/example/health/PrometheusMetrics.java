@@ -1,4 +1,4 @@
-package org.example.configuration.health;
+package org.example.health;
 
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;

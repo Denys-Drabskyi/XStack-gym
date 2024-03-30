@@ -1,12 +1,15 @@
 package org.example.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.example.dto.PasswordChangeDto;
+import org.example.entity.User;
+import org.example.service.AuthService;
 import org.example.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +22,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class UserControllerTest {
   @Mock
   private UserService service;
+  @Mock
+  private AuthService authService;
   @InjectMocks
   private UserController controller;
 
@@ -27,10 +32,10 @@ class UserControllerTest {
   @Test
   @DisplayName("login calls service")
   void testCase01() {
-    when(service.auth(any())).thenReturn(true);
+    when(authService.signIn(any())).thenReturn("");
     controller.login(dto);
 
-    verify(service, times(1)).auth(dto);
+    verify(authService, times(1)).signIn(dto);
   }
 
   @Test
@@ -46,8 +51,8 @@ class UserControllerTest {
   @DisplayName("activateDeactivateUser calls service")
   void testCase03() {
     doNothing().when(service).changeActive(any());
-    controller.activateDeactivateUser(dto);
+    controller.activateDeactivateUser(User.builder().username("").build());
 
-    verify(service, times(1)).changeActive(dto);
+    verify(service, times(1)).changeActive(anyString());
   }
 }

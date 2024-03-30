@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class UpdateTrainersListDto extends UserCredentialsDto {
+public class UpdateTrainersListDto {
   @NotNull
   private List<String> trainers;
 }

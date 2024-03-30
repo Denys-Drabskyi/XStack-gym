@@ -44,7 +44,7 @@ public class ApplicationConfiguration {
   @Bean
   public LoadingCache<String, Integer> bruteForceCache() {
     return CacheBuilder.newBuilder()
-        .expireAfterWrite(30, TimeUnit.MINUTES)
+        .expireAfterWrite(30, TimeUnit.SECONDS)
         .build(new CacheLoader<>() {
           @Override
           public Integer load(String token) {

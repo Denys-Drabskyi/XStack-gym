@@ -24,6 +24,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.config.authentication.PasswordEncoderParser;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -31,6 +33,8 @@ class UserServiceImplTest {
   private UserDao userDao;
   @Mock
   private UserMapper mapper;
+  @Mock
+  private PasswordEncoder passwordEncoder;
   @InjectMocks
   private UserServiceImpl service;
   @Spy
@@ -57,6 +61,7 @@ class UserServiceImplTest {
     when(mapper.toBuilder(any())).thenReturn(userBuilder);
     when(userDao.getLastWithUserNamePattern(any())).thenReturn(Optional.empty());
     when(userDao.save(any())).thenReturn(USER);
+    when(passwordEncoder.encode(anyString())).thenReturn("password");
 
     service.createUser(DTO);
     verify(userBuilder, times(1)).username("fname.lname");
@@ -69,6 +74,7 @@ class UserServiceImplTest {
   void testCase02() {
     userBuilder = mock(User.UserBuilder.class);
     when(mapper.toBuilder(any())).thenReturn(userBuilder);
+    when(passwordEncoder.encode(anyString())).thenReturn("password");
 
     when(userBuilder.username(anyString())).thenReturn(userBuilder);
     when(userBuilder.password(anyString())).thenReturn(userBuilder);
@@ -124,7 +130,7 @@ class UserServiceImplTest {
     USER.setActive(true);
     when(userDao.getByUsername(anyString())).thenReturn(Optional.of(USER));
 
-    service.changeActive(PASSWORD_CHANGE_DTO);
+    service.changeActive(PASSWORD_CHANGE_DTO.getUsername());
     verify(USER, times(1)).setActive(false);
     verify(userDao, times(1)).save(USER);
   }
@@ -135,7 +141,7 @@ class UserServiceImplTest {
     USER.setActive(false);
     when(userDao.getByUsername(anyString())).thenReturn(Optional.of(USER));
 
-    service.changeActive(PASSWORD_CHANGE_DTO);
+    service.changeActive(PASSWORD_CHANGE_DTO.getUsername());
     verify(USER, times(1)).setActive(true);
     verify(userDao, times(1)).save(USER);
   }
@@ -147,14 +153,5 @@ class UserServiceImplTest {
 
     assertTrue(service.existsById(UUID.randomUUID()));
     verify(userDao, times(1)).existById(any());
-  }
-
-  @Test
-  @DisplayName("auth() returns dao result")
-  void testCase14() {
-    when(userDao.existsByUsernameAndPasswordAndActive(DTO.getUsername(), DTO.getPassword(), true)).thenReturn(true);
-
-    assertTrue(service.auth(DTO));
-    verify(userDao, times(1)).existsByUsernameAndPasswordAndActive(DTO.getUsername(), DTO.getPassword(), true);
   }
 }

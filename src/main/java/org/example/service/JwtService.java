@@ -36,7 +36,10 @@ public class JwtService {
   }
 
   private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
-    final Claims claims = extractAllClaims(token);
+    final Claims claims = Jwts.parser()
+        .verifyWith(getSignKey())
+        .build().parseSignedClaims(token)
+        .getPayload();
     return claimsResolvers.apply(claims);
   }
 
@@ -52,18 +55,7 @@ public class JwtService {
   }
 
   private boolean isTokenExpired(String token) {
-    return extractExpiration(token).before(new Date());
-  }
-
-  private Date extractExpiration(String token) {
-    return extractClaim(token, Claims::getExpiration);
-  }
-
-  private Claims extractAllClaims(String token) {
-    return Jwts.parser()
-        .verifyWith(getSignKey())
-        .build().parseSignedClaims(token)
-        .getPayload();
+    return extractClaim(token, Claims::getExpiration).before(new Date());
   }
 
   private SecretKey getSignKey() {

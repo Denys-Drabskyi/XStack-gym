@@ -2,7 +2,7 @@ package org.example.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.example.configuration.security.LogoutBlacklist;
+import org.example.security.LogoutBlacklist;
 import org.example.dto.OnAuth;
 import org.example.dto.PasswordChangeDto;
 import org.example.dto.UserCredentialsDto;

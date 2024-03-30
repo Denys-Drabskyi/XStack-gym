@@ -8,7 +8,8 @@ import static org.mockito.Mockito.when;
 import java.util.Date;
 import java.util.List;
 import org.example.dto.TrainerDto;
-import org.example.dto.UpdateTrainersListDto;
+import org.example.entity.User;
+import org.example.service.AuthService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +24,8 @@ class TrainerControllerTest {
   @Mock
   TrainerService service;
   @Mock
+  AuthService authService;
+  @Mock
   TrainingService trainingService;
   @InjectMocks
   TrainerController controller;
@@ -32,17 +35,17 @@ class TrainerControllerTest {
   @Test
   @DisplayName("registerTrainer calls service")
   void testCase01() {
-    when(service.create(any())).thenReturn(null);
+    when(authService.createTrainer(any())).thenReturn(null);
     controller.registerTrainer(dto);
 
-    verify(service, times(1)).create(dto);
+    verify(authService, times(1)).createTrainer(dto);
   }
 
   @Test
   @DisplayName("registerTrainee calls service")
   void testCase02() {
     when(service.getByUsername(any())).thenReturn(null);
-    controller.getTrainer(dto, "username");
+    controller.getTrainer(dto.getUsername());
 
     verify(service, times(1)).getByUsername(any());
   }
@@ -60,7 +63,7 @@ class TrainerControllerTest {
   @DisplayName("getUnassignedTrainers calls service")
   void testCase05() {
     when(service.getTrainersNotAssignedToTrainee(any())).thenReturn(null);
-    controller.getUnassignedTrainers(UpdateTrainersListDto.builder().build());
+    controller.getUnassignedTrainers(User.builder().username("test").build());
 
     verify(service, times(1)).getTrainersNotAssignedToTrainee(any());
   }
@@ -69,7 +72,7 @@ class TrainerControllerTest {
   @DisplayName("getTrainerTrainings calls service")
   void testCase06() {
     when(trainingService.getTrainerTrainingListByTraineeAndDateBetween(any(), any(), any(), any())).thenReturn(null);
-    controller.getTrainerTrainings(dto, List.of(), new Date(), new Date());
+    controller.getTrainerTrainings(User.builder().username("test").build(), List.of(), new Date(), new Date());
 
     verify(trainingService, times(1)).getTrainerTrainingListByTraineeAndDateBetween(any(), any(), any(), any());
   }

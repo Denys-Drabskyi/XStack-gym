@@ -1,4 +1,4 @@
-package org.example.configuration.security;
+package org.example.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

@@ -6,107 +6,114 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.example.dao.TraineeDao;
 import org.example.dao.TrainerDao;
+import org.example.dto.TraineeDto;
+import org.example.dto.TraineeDtoWithTrainers;
 import org.example.dto.TrainerDto;
+import org.example.dto.TrainerDtoWithTrainees;
+import org.example.dto.UpdateTrainersListDto;
+import org.example.dto.UserCredentialsDto;
 import org.example.entity.Trainee;
 import org.example.entity.Trainer;
 import org.example.entity.User;
 import org.example.mapper.TrainerMapper;
+import org.example.repository.TraineeRepository;
 import org.example.service.TrainingTypeService;
 import org.example.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class TrainerServiceImplTest {
-  @Mock
-  private TrainerDao trainerDao;
-  @Mock
-  private TraineeDao traineeDao;
-  @Mock
-  private TrainerMapper trainerMapper;
-  @Mock
-  private UserService userService;
-  @Mock
-  private TrainingTypeService trainingTypeService;
-  private static final Trainer TRAINER = Trainer.builder().user(User.builder().username("test").build()).build();
-  private static final TrainerDto DTO = TrainerDto.builder().build();
-  private static final Trainee TRAINEE = Trainee.builder().trainers(new ArrayList<>()).build();
-  private static final String TRAINER_USERNAME = "test.test";
+  private TrainerDto TRAINER_DTO;
 
-  @InjectMocks
+  @BeforeEach
+  void setUp() {
+    TRAINER_DTO = TrainerDto.builder()
+        .firstName("trainer")
+        .lastName("trainer")
+        .password("test")
+        .specialization("Cardio")
+        .build();
+  }
+
+  @Autowired
+  private TraineeRepository traineeRepository;
+  @Autowired
   private TrainerServiceImpl service;
 
   @Test
-  @DisplayName("existsById() returns optional of Trainer")
+  @DisplayName("getByUsername() test")
   void testCase01() {
-    when(trainerDao.existById(any())).thenReturn(true);
-
-    assertTrue(service.existsById(UUID.randomUUID()));
+    TrainerDtoWithTrainees rez = service.getByUsername("trainer.trainer");
+    assertEquals("trainer", rez.getFirstName());
+    assertEquals(1, rez.getTrainees().size());
   }
 
   @Test
-  @DisplayName("getExistingById() returns trainee")
+  @DisplayName("getByUsername() returns trainee")
+  void testCase02() {
+    TrainerDto rez = service.create(TRAINER_DTO);
+    assertEquals("trainer.trainer1", rez.getUsername());
+    assertEquals("Cardio", rez.getSpecialization());
+  }
+
+  @Test
+  @DisplayName("update() test")
   void testCase03() {
-    when(trainerDao.getByUsername(any())).thenReturn(TRAINER);
-    when(trainerMapper.toDto(TRAINER)).thenReturn(DTO);
+    TRAINER_DTO.setUsername("trainer.trainer");
+    TRAINER_DTO.setFirstName("new");
+    TRAINER_DTO.setSpecialization("Yoga");
 
-    assertEquals(DTO, service.get(DTO));
+    TrainerDto rez = service.update(TRAINER_DTO);
+    assertEquals("trainer.trainer", rez.getUsername());
+    assertEquals("new", rez.getFirstName());
+    assertEquals("trainer", rez.getLastName());
+    assertEquals("Yoga", rez.getSpecialization());
   }
 
   @Test
-  @DisplayName("create() creates trainer")
+  @DisplayName("getTrainersNotAssignedToTrainee() test")
   void testCase04() {
-    when(trainerDao.save(any())).thenReturn(TRAINER);
-    when(trainerMapper.toBuilder(DTO)).thenReturn(Trainer.builder());
-
-    service.create(DTO);
-    verify(trainerMapper, times(1)).toBuilder(DTO);
-    verify(trainerDao, times(1)).save(any());
+    List<TrainerDto> rez = service.getTrainersNotAssignedToTrainee("trainee.trainee");
+    assertEquals(2, rez.size());
   }
 
-  @Test
-  @DisplayName("update() updates trainer")
-  void testCase06() {
-    when(trainerDao.getByUsername(DTO.getUsername())).thenReturn(TRAINER);
-
-    service.update(DTO);
-    verify(trainerDao, times(1)).save(TRAINER);
+  @ParameterizedTest
+  @MethodSource("testCase05Source")
+  @DisplayName("updateTrainers() test")
+  void testCase05(List<String> trainers, UpdateTrainersListDto dto) {
+    List<TrainerDto> rez = service.updateTrainers("trainee.trainee", dto);
+    List<String> rezUsernames = rez.stream().map(UserCredentialsDto::getUsername).toList();
+    assertEquals(trainers.size(), rezUsernames.size());
+    assertTrue(trainers.containsAll(rezUsernames));
   }
 
-  @Test
-  @DisplayName("addTrainerToTrainee() adds trainer to trainee")
-  void testCase09() {
-    when(traineeDao.getByUsername(DTO.getUsername())).thenReturn(TRAINEE);
-    when(trainerDao.getByUsername(TRAINER_USERNAME)).thenReturn(TRAINER);
-
-    service.addTrainerToTrainee(DTO, TRAINER_USERNAME);
-    verify(traineeDao, times(1)).save(any());
-  }
-
-  @Test
-  @DisplayName("addTrainerToTrainee() adds trainer to trainee")
-  void testCase11() {
-    when(traineeDao.getByUsername(DTO.getUsername())).thenReturn(TRAINEE);
-
-    service.getTrainersNotAssignedToTrainee(DTO);
-    verify(trainerDao, times(1)).getTrainersNotAssignedToTrainee(any());
-  }
-
-  @Test
-  @DisplayName("getByUsername() returns trainer")
-  void testCase13() {
-    when(trainerDao.getByUsername(DTO.getUsername())).thenReturn(TRAINER);
-
-    service.getByUsername(DTO.getUsername());
-    verify(trainerDao, times(1)).getByUsername(any());
+  public static Stream<Arguments> testCase05Source() {
+    return Stream.of(
+        Arguments.of(List.of(), UpdateTrainersListDto.builder().build()),
+        Arguments.of(List.of("trainer.trainer"), UpdateTrainersListDto.builder().trainers(List.of("trainer.trainer")).build()),
+        Arguments.of(List.of("trainer.trainer"), UpdateTrainersListDto.builder().trainers(List.of("trainer.trainer", "inaccurate")).build()),
+        Arguments.of(List.of("trainer.trainer", "trainer.train", "trainer.train1"), UpdateTrainersListDto.builder().trainers(List.of("trainer.trainer", "inaccurate", "trainer.train", "trainer.train1")).build())
+    );
   }
 
 }

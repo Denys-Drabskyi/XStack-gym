@@ -25,16 +25,6 @@ public class TraineeServiceImpl implements TraineeService {
   private TraineeMapper traineeMapper;
 
   @Override
-  public boolean existsById(UUID id) {
-    return traineeDao.existById(id);
-  }
-
-  @Override
-  public TraineeDto get(UserCredentialsDto credentials) {
-    return traineeMapper.toDto(traineeDao.getByUsername(credentials.getUsername()));
-  }
-
-  @Override
   public TraineeDtoWithTrainers getWithTrainers(String username) {
     return traineeMapper.toDtoWithTrainers(traineeDao.getByUsername(username));
   }

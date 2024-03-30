@@ -34,19 +34,9 @@ public class TrainerServiceImpl implements TrainerService {
   private TrainingTypeService trainingTypeService;
 
   @Override
-  public boolean existsById(UUID id) {
-    return trainerDao.existById(id);
-  }
-
-  @Override
-  public TrainerDto get(UserCredentialsDto credentials) {
-    return trainerMapper.toDto(trainerDao.getByUsername(credentials.getUsername()));
-  }
-  @Override
   public TrainerDtoWithTrainees getByUsername(String username) {
     return trainerMapper.toDtoWithTrainees(trainerDao.getByUsername(username));
   }
-
 
   @Override
   @Transactional
@@ -76,29 +66,19 @@ public class TrainerServiceImpl implements TrainerService {
   }
 
   @Override
-  public void addTrainerToTrainee(UserCredentialsDto traineeCredentials, String trainerUsername) {
-    Trainee trainee = traineeDao.getByUsername(traineeCredentials.getUsername());
-    Trainer trainer = trainerDao.getByUsername(trainerUsername);
-
-    trainee.getTrainers().add(trainer);
-    traineeDao.save(trainee);
-    log.info("Added trainer with username:{} to trainee with username:{}", trainerUsername, traineeCredentials.getUsername());
-  }
-
-  @Override
   public List<TrainerDto> getTrainersNotAssignedToTrainee(String username) {
     Trainee trainee = traineeDao.getByUsername(username);
     return trainerMapper.toDtoList(trainerDao.getTrainersNotAssignedToTrainee(trainee));
   }
 
   @Override
-  public List<TrainerDto> updateTrainers(UpdateTrainersListDto dto) {
-    Trainee trainee = traineeDao.getByUsername(dto.getUsername());
-    log.info("Started trainee with username:{} trainers update", dto.getUsername());
+  public List<TrainerDto> updateTrainers(String traineeUsername, UpdateTrainersListDto dto) {
+    Trainee trainee = traineeDao.getByUsername(traineeUsername);
+    log.info("Started trainee with username:{} trainers update", traineeUsername);
     List<Trainer> trainers = trainerDao.getByUsernameIn(dto.getTrainers());
     trainee.setTrainers(trainers);
     traineeDao.save(trainee);
-    log.info("Updated trainee with username:{} trainers", dto.getUsername());
+    log.info("Updated trainee with username:{} trainers", traineeUsername);
     return trainerMapper.toDtoList(trainee.getTrainers());
   }
 }
