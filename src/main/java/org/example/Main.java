@@ -1,14 +1,13 @@
 package org.example;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Component;
 
-import org.example.configuration.AppConfig;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
+@SpringBootApplication
+@Component
 public class Main {
   public static void main(String[] args) {
-    try (ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class)) {
-
-    }
+    SpringApplication.run(Main.class, args);
   }
 }

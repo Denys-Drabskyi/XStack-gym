@@ -1,13 +1,15 @@
 package org.example.service;
 
-import java.util.Optional;
-import java.util.UUID;
-import org.example.entity.Trainee;
+import org.example.dto.TraineeDto;
+import org.example.dto.TraineeDtoWithTrainers;
 
 public interface TraineeService {
-  Optional<Trainee> getById(UUID id);
-  Trainee getExistingById(UUID id);
-  Trainee create(Trainee trainee);
-  Trainee update(Trainee trainee);
-  void deleteById(UUID id);
+
+  TraineeDtoWithTrainers getWithTrainers(String username);
+
+  TraineeDto create(TraineeDto dto);
+
+  TraineeDtoWithTrainers update(TraineeDto dto);
+
+  void deleteByUsername(String username);
 }
