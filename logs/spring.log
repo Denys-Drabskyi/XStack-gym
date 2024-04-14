@@ -1,0 +1,135 @@
+2024-04-14 12:47:31.751 INFO  org.example.Main transactionId=[] - Starting Main using Java 21 with PID 30072 (C:\Users\Den\IdeaProjects\gym\main-service\target\classes started by Den in C:\Users\Den\IdeaProjects\gym)
+2024-04-14 12:47:31.758 INFO  org.example.Main transactionId=[] - No active profile set, falling back to 1 default profile: "default"
+2024-04-14 12:47:32.871 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate transactionId=[] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-04-14 12:47:32.943 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate transactionId=[] - Finished Spring Data repository scanning in 66 ms. Found 5 JPA repository interfaces.
+2024-04-14 12:47:33.443 ERROR org.apache.catalina.core.AprLifecycleListener transactionId=[] - An incompatible version [1.2.33] of the Apache Tomcat Native library is installed, while Tomcat requires version [1.2.34]
+2024-04-14 12:47:33.656 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer transactionId=[] - Tomcat initialized with port 8080 (http)
+2024-04-14 12:47:33.666 INFO  org.apache.catalina.core.StandardService transactionId=[] - Starting service [Tomcat]
+2024-04-14 12:47:33.666 INFO  org.apache.catalina.core.StandardEngine transactionId=[] - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-14 12:47:33.734 INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] transactionId=[] - Initializing Spring embedded WebApplicationContext
+2024-04-14 12:47:33.734 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext transactionId=[] - Root WebApplicationContext: initialization completed in 1944 ms
+2024-04-14 12:47:33.900 ERROR org.springframework.boot.web.embedded.tomcat.TomcatStarter transactionId=[] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'jwtAuthenticationFilter' defined in file [C:\Users\Den\IdeaProjects\gym\main-service\target\classes\org\example\filter\JwtAuthenticationFilter.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'userServiceImpl': Unsatisfied dependency expressed through field 'userDao': Error creating bean with name 'userDao' defined in file [C:\Users\Den\IdeaProjects\gym\main-service\target\classes\org\example\dao\UserDao.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in org.example.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+2024-04-14 12:47:33.905 INFO  org.apache.catalina.core.StandardService transactionId=[] - Stopping service [Tomcat]
+2024-04-14 12:47:33.913 WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext transactionId=[] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2024-04-14 12:47:33.924 INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger transactionId=[] - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-04-14 12:47:33.947 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter transactionId=[] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).
+
+2024-04-14 12:49:28.945 INFO  org.example.Main transactionId=[] - Starting Main using Java 21 with PID 30388 (C:\Users\Den\IdeaProjects\gym\main-service\target\classes started by Den in C:\Users\Den\IdeaProjects\gym)
+2024-04-14 12:49:28.954 INFO  org.example.Main transactionId=[] - No active profile set, falling back to 1 default profile: "default"
+2024-04-14 12:49:29.832 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate transactionId=[] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-04-14 12:49:29.910 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate transactionId=[] - Finished Spring Data repository scanning in 72 ms. Found 5 JPA repository interfaces.
+2024-04-14 12:49:30.372 ERROR org.apache.catalina.core.AprLifecycleListener transactionId=[] - An incompatible version [1.2.33] of the Apache Tomcat Native library is installed, while Tomcat requires version [1.2.34]
+2024-04-14 12:49:30.572 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer transactionId=[] - Tomcat initialized with port 8080 (http)
+2024-04-14 12:49:30.581 INFO  org.apache.catalina.core.StandardService transactionId=[] - Starting service [Tomcat]
+2024-04-14 12:49:30.581 INFO  org.apache.catalina.core.StandardEngine transactionId=[] - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-14 12:49:30.646 INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] transactionId=[] - Initializing Spring embedded WebApplicationContext
+2024-04-14 12:49:30.647 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext transactionId=[] - Root WebApplicationContext: initialization completed in 1652 ms
+2024-04-14 12:49:30.821 ERROR org.springframework.boot.web.embedded.tomcat.TomcatStarter transactionId=[] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'jwtAuthenticationFilter' defined in file [C:\Users\Den\IdeaProjects\gym\main-service\target\classes\org\example\filter\JwtAuthenticationFilter.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'userServiceImpl': Unsatisfied dependency expressed through field 'userDao': Error creating bean with name 'userDao' defined in file [C:\Users\Den\IdeaProjects\gym\main-service\target\classes\org\example\dao\UserDao.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in org.example.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+2024-04-14 12:49:30.836 INFO  org.apache.catalina.core.StandardService transactionId=[] - Stopping service [Tomcat]
+2024-04-14 12:49:30.843 WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext transactionId=[] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2024-04-14 12:49:30.854 INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger transactionId=[] - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-04-14 12:49:30.869 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter transactionId=[] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).
+
+2024-04-14 12:50:13.280 INFO  org.example.Main transactionId=[] - Starting Main using Java 21 with PID 13240 (C:\Users\Den\IdeaProjects\gym\main-service\target\classes started by Den in C:\Users\Den\IdeaProjects\gym)
+2024-04-14 12:50:13.288 INFO  org.example.Main transactionId=[] - The following 1 profile is active: "local"
+2024-04-14 12:50:14.216 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate transactionId=[] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-04-14 12:50:14.294 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate transactionId=[] - Finished Spring Data repository scanning in 72 ms. Found 5 JPA repository interfaces.
+2024-04-14 12:50:14.760 ERROR org.apache.catalina.core.AprLifecycleListener transactionId=[] - An incompatible version [1.2.33] of the Apache Tomcat Native library is installed, while Tomcat requires version [1.2.34]
+2024-04-14 12:50:14.974 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer transactionId=[] - Tomcat initialized with port 8080 (http)
+2024-04-14 12:50:14.985 INFO  org.apache.catalina.core.StandardService transactionId=[] - Starting service [Tomcat]
+2024-04-14 12:50:14.985 INFO  org.apache.catalina.core.StandardEngine transactionId=[] - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-14 12:50:15.049 INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] transactionId=[] - Initializing Spring embedded WebApplicationContext
+2024-04-14 12:50:15.050 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext transactionId=[] - Root WebApplicationContext: initialization completed in 1714 ms
+2024-04-14 12:50:15.314 INFO  org.hibernate.jpa.internal.util.LogHelper transactionId=[] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-04-14 12:50:15.382 INFO  org.hibernate.Version transactionId=[] - HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-04-14 12:50:15.432 INFO  org.hibernate.cache.internal.RegionFactoryInitiator transactionId=[] - HHH000026: Second-level cache disabled
+2024-04-14 12:50:15.676 INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo transactionId=[] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-04-14 12:50:15.706 INFO  com.zaxxer.hikari.HikariDataSource transactionId=[] - HikariPool-1 - Starting...
+2024-04-14 12:50:15.841 INFO  com.zaxxer.hikari.pool.HikariPool transactionId=[] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1e14b269
+2024-04-14 12:50:15.842 INFO  com.zaxxer.hikari.HikariDataSource transactionId=[] - HikariPool-1 - Start completed.
+2024-04-14 12:50:16.835 INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator transactionId=[] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-04-14 12:50:16.924 INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean transactionId=[] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-04-14 12:50:17.193 INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactory transactionId=[] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-04-14 12:50:17.687 WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration transactionId=[] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-04-14 12:50:18.066 INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver transactionId=[] - Exposing 2 endpoint(s) beneath base path '/actuator'
+2024-04-14 12:50:18.141 INFO  org.springframework.security.web.DefaultSecurityFilterChain transactionId=[] - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4baf0b7f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@30f39d9d, org.springframework.security.web.context.SecurityContextHolderFilter@3e07ccbf, org.springframework.security.web.header.HeaderWriterFilter@564d9ec2, org.springframework.web.filter.CorsFilter@f58011d, org.springframework.security.web.authentication.logout.LogoutFilter@5ceeab0c, org.example.filter.JwtAuthenticationFilter@17596317, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@597f9d91, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@78ded8c9, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5fb0c234, org.springframework.security.web.session.SessionManagementFilter@518e9141, org.springframework.security.web.access.ExceptionTranslationFilter@7845f53d, org.springframework.security.web.access.intercept.AuthorizationFilter@72ab75c]
+2024-04-14 12:50:18.750 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer transactionId=[] - Tomcat started on port 8080 (http) with context path ''
+2024-04-14 12:50:18.761 INFO  org.example.Main transactionId=[] - Started Main in 6.163 seconds (process running for 6.997)
+2024-04-14 12:50:19.042 INFO  org.example.service.impl.TrainingTypeServiceImpl transactionId=[] - Getting all training types
+2024-04-14 12:51:28.311 INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] transactionId=[] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-04-14 12:51:28.311 INFO  org.springframework.web.servlet.DispatcherServlet transactionId=[] - Initializing Servlet 'dispatcherServlet'
+2024-04-14 12:51:28.312 INFO  org.springframework.web.servlet.DispatcherServlet transactionId=[] - Completed initialization in 1 ms
+2024-04-14 12:51:28.473 INFO  org.example.service.impl.TraineeServiceImpl transactionId=[1ab1dfbb-3d47-488e-bc39-6a3f8347e52d] - Started new trainee creation
+2024-04-14 12:51:28.473 INFO  org.example.service.impl.UserServiceImpl transactionId=[1ab1dfbb-3d47-488e-bc39-6a3f8347e52d] - Started new user creation
+2024-04-14 12:51:28.545 INFO  org.example.service.impl.UserServiceImpl transactionId=[1ab1dfbb-3d47-488e-bc39-6a3f8347e52d] - Checking if username:password.encrypted1 is available
+2024-04-14 12:51:28.545 INFO  org.example.dao.UserDao transactionId=[1ab1dfbb-3d47-488e-bc39-6a3f8347e52d] - Started looking for users with username like:password.encrypted1
+2024-04-14 12:51:28.589 INFO  org.example.dao.BasicDao transactionId=[1ab1dfbb-3d47-488e-bc39-6a3f8347e52d] - Saved User with id: 9452ddc7-7cfc-4791-a781-681e5e66bc5e
+2024-04-14 12:51:28.593 INFO  org.example.dao.BasicDao transactionId=[1ab1dfbb-3d47-488e-bc39-6a3f8347e52d] - Saved org.example.entity.Trainee with id: a13bcd7d-f26e-43c3-b4ee-1366a7d156eb
+2024-04-14 12:51:28.593 INFO  org.example.service.impl.TraineeServiceImpl transactionId=[1ab1dfbb-3d47-488e-bc39-6a3f8347e52d] - Created new trainee with username:password.encrypted1
+2024-04-14 12:51:28.612 INFO  org.example.service.impl.UserServiceImpl transactionId=[1ab1dfbb-3d47-488e-bc39-6a3f8347e52d] - Getting user with username:password.encrypted1
+2024-04-14 12:51:28.699 INFO  org.example.filter.LoggingFilter transactionId=[1ab1dfbb-3d47-488e-bc39-6a3f8347e52d] -  
+Endpoint: /trainee/register,
+HTTP Method: POST,
+Response: 
+  code:201
+  body:{"username":"password.encrypted1","password":"OZ5XGd94xaL51A","jwt":"eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJwYXNzd29yZC5lbmNyeXB0ZWQxIiwiZXhwIjoxNzEzMjMyMjg4LCJpYXQiOjE3MTMwODgyODgsInVzZXJuYW1lIjoicGFzc3dvcmQuZW5jcnlwdGVkMSJ9.BMnGifESfuiEIAa0_yOIKiTJ7TI5WedXoRmfp7xrw60"}
+
+2024-04-14 12:51:48.924 INFO  org.example.service.impl.UserServiceImpl transactionId=[] - Getting user with username:password.encrypted1
+2024-04-14 12:51:48.942 INFO  org.example.dao.TraineeDao transactionId=[4af64f23-c78e-44c0-a335-adb09b5cfb53] - Looking for trainee with username:trainee.trainee1
+2024-04-14 12:51:49.003 INFO  org.example.filter.LoggingFilter transactionId=[4af64f23-c78e-44c0-a335-adb09b5cfb53] -  
+Endpoint: /trainee/trainee.trainee1,
+HTTP Method: GET,
+Response: 
+  code:200
+  body:{"username":"trainee.trainee1","firstName":"trainee","lastName":"trainee","active":true,"birthDate":"2021-03-12","address":"address","trainers":[]}
+
+2024-04-14 12:51:54.671 INFO  org.example.service.impl.UserServiceImpl transactionId=[] - Getting user with username:password.encrypted1
+2024-04-14 12:51:54.676 INFO  org.example.dao.TraineeDao transactionId=[5c6085df-4a3a-41ff-8d70-ed9e4b162fe0] - Looking for trainee with username:trainee.trainee2
+2024-04-14 12:51:54.682 INFO  org.example.filter.LoggingFilter transactionId=[5c6085df-4a3a-41ff-8d70-ed9e4b162fe0] -  
+Endpoint: /trainee/trainee.trainee2,
+HTTP Method: GET,
+Response: 
+  code:200
+  body:{"username":"trainee.trainee2","firstName":"trainee","lastName":"trainee","active":true,"birthDate":"2021-03-12","address":"address","trainers":[]}
+
+2024-04-14 12:52:08.721 INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean transactionId=[] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-04-14 12:52:08.723 INFO  com.zaxxer.hikari.HikariDataSource transactionId=[] - HikariPool-1 - Shutdown initiated...
+2024-04-14 12:52:08.730 INFO  com.zaxxer.hikari.HikariDataSource transactionId=[] - HikariPool-1 - Shutdown completed.
