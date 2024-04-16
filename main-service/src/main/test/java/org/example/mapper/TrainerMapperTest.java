@@ -1,9 +1,11 @@
 package org.example.mapper;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.UUID;
-import org.example.Main;
+import org.example.MainServiceApplication;
 import org.example.dto.TrainerDto;
 import org.example.dto.UserCredentialsDto;
 import org.example.entity.Trainer;
@@ -14,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = Main.class)
+@SpringBootTest(classes = MainServiceApplication.class)
 class TrainerMapperTest {
 
   @Autowired
@@ -24,7 +26,8 @@ class TrainerMapperTest {
 
   private final Trainer trainer = Trainer.builder()
       .id(id)
-      .user(User.builder().id(UUID.randomUUID()).firstName("firstname").lastName("lastname").password("password").username("username").build())
+      .user(User.builder().id(UUID.randomUUID()).firstName("firstname").lastName("lastname").password("password")
+          .username("username").build())
       .specialization(new TrainingType(UUID.randomUUID(), "type1"))
       .build();
   private final TrainerDto trainerDto = TrainerDto.builder()
@@ -77,7 +80,6 @@ class TrainerMapperTest {
     assertNotEquals(newTrainerDto.getUsername(), trainer.getUser().getUsername());
     assertNotEquals(newTrainerDto.getPassword(), trainer.getUser().getPassword());
   }
-
 
 
 }
