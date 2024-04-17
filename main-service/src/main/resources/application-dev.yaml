@@ -1,4 +1,9 @@
 management:
+  health:
+    circuit-breakers:
+      enabled: true
+    rate-limiters:
+      enabled: true
   endpoint:
     health:
       show-components: always
@@ -12,7 +17,7 @@ management:
 spring:
   datasource:
     driver-class-name: ${DEV_DB_DRIVER_CLASS_NAME:com.mysql.cj.jdbc.Driver}
-    url:      ${DEV_DB_URL:jdbc:mysql://localhost:3307/gym}
+    url: ${DEV_DB_URL:jdbc:mysql://localhost:3307/gym}
     username: ${DEV_DB_USERNAME:root}
     password: ${DEV_DB_PASSWORD:}
 

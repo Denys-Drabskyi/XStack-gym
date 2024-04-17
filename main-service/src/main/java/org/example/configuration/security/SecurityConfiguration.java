@@ -19,8 +19,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
@@ -48,7 +46,7 @@ public class SecurityConfiguration {
           return corsConfiguration;
         }))
         .authorizeHttpRequests(request -> request
-            .requestMatchers("/user/login", "/trainee/register", "/trainer/register").permitAll()
+            .requestMatchers("/actuator/health", "/user/login", "/trainee/register", "/trainer/register").permitAll()
             .anyRequest().authenticated())
         .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
         .authenticationProvider(authenticationProvider(passwordEncoder))

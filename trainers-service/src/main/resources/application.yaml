@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: trainers-service
-
-server:
-  port: 8081

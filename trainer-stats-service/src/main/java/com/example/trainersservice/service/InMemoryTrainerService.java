@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.dto.RegisterTrainingEventDto;
 import org.example.dto.TrainerStatisticsDto;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @Profile("inMemory")
 @RequiredArgsConstructor
@@ -61,6 +63,7 @@ public class InMemoryTrainerService implements TrainerService {
             m -> m.addTrainingDuration(dto.getTrainingDuration()),
             () -> storage.add(toMonth(dto, year, month))
         );
+    log.info("Added training duration to {}.{} for trainer:{}", year, month, dto.getUsername());
   }
 
   private void deleteTraining(RegisterTrainingEventDto dto, int year, int month) {
@@ -70,6 +73,7 @@ public class InMemoryTrainerService implements TrainerService {
         .orElseThrow(
             () -> new IllegalStateException("Delete training request on month that does not exist"));
     storedMonth.subtractTrainingDuration(dto.getTrainingDuration());
+    log.info("Deleted training duration from {}.{} for trainer:{}", year, month, dto.getUsername());
   }
 
   private TrainerMonth toMonth(RegisterTrainingEventDto dto, int year, int month) {
