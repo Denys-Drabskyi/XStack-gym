@@ -57,7 +57,7 @@ public class ApplicationConfiguration {
   @Bean
   public UserDetailsService userDetailsService() {
     InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-    manager.createUser(User.withUsername("main-service").password("").build());
+    manager.createUser(User.withUsername(mainService).password("").build());
     return manager;
   }
 }
