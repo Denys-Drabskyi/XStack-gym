@@ -3,6 +3,7 @@ package org.example.service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import org.example.dto.TrainingDto;
 
 public interface TrainingService {
@@ -13,6 +14,8 @@ public interface TrainingService {
 
   List<TrainingDto> getTrainerTrainingListByTraineeAndDateBetween
       (String trainerUsername, Collection<String> traineeUsernames, Date from, Date to);
+
+  void deleteTraining(UUID trainingId);
 
   double getAverageTrainerTrainingsCount();
 }

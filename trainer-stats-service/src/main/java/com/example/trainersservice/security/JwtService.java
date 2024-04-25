@@ -1,15 +1,12 @@
-package org.example.service;
+package com.example.trainersservice.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 import javax.crypto.SecretKey;
-import org.example.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -18,19 +15,9 @@ import org.springframework.stereotype.Service;
 public class JwtService {
   @Value("${token.key}")
   private String secret;
-  @Value("${spring.application.name}")
-  private String appName;
 
   public String extractUserName(String token) {
     return extractClaim(token, Claims::getSubject);
-  }
-
-  public String generateToken(UserDetails userDetails) {
-    Map<String, Object> claims = new HashMap<>();
-    if (userDetails instanceof User customUserDetails) {
-      claims.put("username", customUserDetails.getUsername());
-    }
-    return generateToken(claims, userDetails);
   }
 
   public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -44,27 +31,6 @@ public class JwtService {
         .build().parseSignedClaims(token)
         .getPayload();
     return claimsResolvers.apply(claims);
-  }
-
-  private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-    return Jwts.builder()
-        .header().add("type", "JWT").and()
-        .claims(extraClaims)
-        .subject(userDetails.getUsername())
-        .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() + 86400000)) // 24 hours
-        .signWith(getSignKey(), Jwts.SIG.HS256)
-        .compact();
-  }
-
-  public String generateServiceToken() {
-    return Jwts.builder()
-        .header().add("type", "JWT").and()
-        .subject(appName)
-        .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() + 60000)) // 60 sec
-        .signWith(getSignKey(), Jwts.SIG.HS256)
-        .compact();
   }
 
   private boolean isTokenExpired(String token) {

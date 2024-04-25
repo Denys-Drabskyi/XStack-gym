@@ -3,6 +3,7 @@ package org.example.service.impl;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.example.controller.feign.trainerStatsService.TrainerStatsServiceApi;
 import org.example.dao.TraineeDao;
@@ -12,6 +13,7 @@ import org.example.dto.ActionType;
 import org.example.dto.RegisterTrainingEventDto;
 import org.example.dto.TrainingDto;
 import org.example.entity.Training;
+import org.example.exception.EntityNotFoundException;
 import org.example.mapper.TrainingMapper;
 import org.example.service.TrainingService;
 import org.example.service.TrainingTypeService;
@@ -71,6 +73,18 @@ public class TrainingServiceImpl implements TrainingService {
     log.info("Getting trainer with username:{} trainees list", trainerUsername);
     return trainingMapper.toDtoList(
         trainingDao.getTrainerTrainingListByTraineeAndDateBetween(trainerUsername, traineeUsernames, from, to));
+  }
+
+  @Override
+  @Transactional
+  public void deleteTraining(UUID trainingId) {
+    log.info("Deleting training with id {}", trainingId);
+    Training training = trainingDao.getById(trainingId)
+        .orElseThrow(() -> EntityNotFoundException.byId("Training", trainingId));
+    if (training.getDate().after(new Date())) {
+      trainingDao.delete(trainingId);
+      trainerStatsService.registerTrainingEvent(trainingMapper.toRegisterTrainingEventDto(training, ActionType.DELETE));
+    }
   }
 
   @Override
