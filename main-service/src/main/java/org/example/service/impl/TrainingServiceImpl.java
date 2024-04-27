@@ -5,16 +5,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.example.controller.feign.trainerStatsService.TrainerStatsServiceApi;
 import org.example.dao.TraineeDao;
 import org.example.dao.TrainerDao;
 import org.example.dao.TrainingDao;
 import org.example.dto.ActionType;
-import org.example.dto.RegisterTrainingEventDto;
 import org.example.dto.TrainingDto;
 import org.example.entity.Training;
 import org.example.exception.EntityNotFoundException;
 import org.example.mapper.TrainingMapper;
+import org.example.notifier.TrainingStatsServiceNotifier;
 import org.example.service.TrainingService;
 import org.example.service.TrainingTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ public class TrainingServiceImpl implements TrainingService {
   @Autowired
   private TrainingTypeService trainingTypeService;
   @Autowired
-  private TrainerStatsServiceApi trainerStatsService;
+  private TrainingStatsServiceNotifier notifier;
 
   @Override
   @Transactional
@@ -47,16 +46,10 @@ public class TrainingServiceImpl implements TrainingService {
     training.setTrainer(trainerDao.getByUsername(dto.getTrainerUsername()));
     training.setType(trainingTypeService.getByName(dto.getTrainingType()));
     training = trainingDao.save(training);
-    registerTrainingEvent(trainingMapper.toRegisterTrainingEventDto(training, ActionType.ADD));
+    notifier.registerTrainingEvent(trainingMapper.toRegisterTrainingEventDto(training, ActionType.ADD));
     log.info("Created new training for trainee with username:{} with trainer:{}", dto.getTraineeUsername(),
         dto.getTrainerUsername());
     return trainingMapper.toDto(training);
-  }
-
-  private void registerTrainingEvent(RegisterTrainingEventDto registerTrainingEventDto) {
-    log.info("Registering training creation event in training stats service");
-    trainerStatsService.registerTrainingEvent(registerTrainingEventDto);
-    log.info("Registered training creation event in training stats service");
   }
 
   @Override
@@ -83,7 +76,7 @@ public class TrainingServiceImpl implements TrainingService {
         .orElseThrow(() -> EntityNotFoundException.byId("Training", trainingId));
     if (training.getDate().after(new Date())) {
       trainingDao.delete(trainingId);
-      trainerStatsService.registerTrainingEvent(trainingMapper.toRegisterTrainingEventDto(training, ActionType.DELETE));
+      notifier.registerTrainingEvent(trainingMapper.toRegisterTrainingEventDto(training, ActionType.DELETE));
     }
   }
 

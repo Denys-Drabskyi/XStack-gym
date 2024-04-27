@@ -19,20 +19,4 @@ token:
 eureka:
   client:
     service-url:
-      #      defaultZone: ${EUREKA_DEFAULT_ZONE}
-      defaultZone: http://localhost:8094/eureka
-
-service:
-  trainer-stats-service: trainer-stats-service
-
-resilience4j:
-  circuitbreaker:
-    instances:
-      TrainerStatsServiceCircuitBreaker:
-        automatic-transition-from-open-to-half-open-enabled: true
-        failure-rate-threshold: 5
-        minimum-number-of-calls: 5
-        permitted-number-of-calls-in-half-open-state: 3
-        sliding-window-size: 10
-        sliding-window-type: count_based
-        wait-duration-in-open-state: 5s
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8094/eureka}
