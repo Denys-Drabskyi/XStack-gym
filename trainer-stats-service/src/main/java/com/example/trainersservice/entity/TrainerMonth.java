@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
+@Deprecated //for old in memory impl //todo replace with TrainingSummary
 public class TrainerMonth {
   private String username;
   private String firstname;

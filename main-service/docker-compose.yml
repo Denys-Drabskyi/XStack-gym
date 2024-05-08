@@ -1,4 +1,14 @@
 services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_container
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - 27017:27017
   prometheus:
     image: prom/prometheus
     ports:
@@ -10,3 +20,7 @@ services:
       - --config.file=/etc/prometheus/prometheus.yaml
     volumes:
       - ./config/prometheus.yaml:/etc/prometheus/prometheus.yaml
+
+volumes:
+  mongodb_data:
+    driver: local

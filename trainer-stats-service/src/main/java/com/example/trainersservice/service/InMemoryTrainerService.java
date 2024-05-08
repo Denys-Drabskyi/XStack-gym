@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @Profile("inMemory")
+@Deprecated // todo create dao for in memory profile and use TrainingSummaryService
 @RequiredArgsConstructor
 public class InMemoryTrainerService implements TrainerService {
   private final List<TrainerMonth> storage;

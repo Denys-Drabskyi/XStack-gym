@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      database: ${MONGO_DB_NAME:test}
+      uri: ${MONGO_URI:mongodb://root:example@localhost:27017/test}
