@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: rest
   application:
     name: main-service
   datasource:

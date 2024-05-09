@@ -2,6 +2,15 @@ spring:
   application:
     name: trainer-stats-service
 
+logging:
+  file:
+    path: logs
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} transactionId=[%X{transactionId}]
+            - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} transactionId=[%X{transactionId}]
+            - %msg%n'
+
 service:
   main: main-service
 

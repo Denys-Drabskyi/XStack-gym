@@ -4,11 +4,18 @@ services:
     container_name: mongodb_container
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_INITDB_ROOT_PASSWORD=root
     volumes:
       - mongodb_data:/data/db
     ports:
       - 27017:27017
+
+  activemq:
+    image: rmohr/activemq:5.14.3
+    ports:
+      - 61616:61616
+      - 8161:8161
+
   prometheus:
     image: prom/prometheus
     ports:

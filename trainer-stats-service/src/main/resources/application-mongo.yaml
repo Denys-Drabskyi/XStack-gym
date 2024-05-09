@@ -2,5 +2,5 @@ spring:
   data:
     mongodb:
       authentication-database: admin
-      database: ${MONGO_DB_NAME:test}
-      uri: ${MONGO_URI:mongodb://root:example@localhost:27017/test}
+      database: ${MONGO_DB_NAME:db}
+      uri: ${MONGO_URI:mongodb://test:test@localhost:27017/db?authSource=admin}

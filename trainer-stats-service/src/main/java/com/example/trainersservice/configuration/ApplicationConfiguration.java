@@ -1,6 +1,6 @@
 package com.example.trainersservice.configuration;
 
-import com.example.trainersservice.entity.TrainerMonth;
+import com.example.trainersservice.entity.TrainingSummary;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -27,7 +27,7 @@ public class ApplicationConfiguration {
   private String mainService;
 
   @Bean
-  public List<TrainerMonth> storage() {
+  public List<TrainingSummary> storage() {
     return new CopyOnWriteArrayList<>();
   }
 
