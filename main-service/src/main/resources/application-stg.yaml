@@ -1,0 +1,22 @@
+management:
+  endpoint:
+    health:
+      show-components: always
+      show-details: always
+  endpoints.web.exposure.include: 'prometheus, health'
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+spring:
+  datasource:
+    driver-class-name: ${STG_DB_DRIVER_CLASS_NAME:com.mysql.cj.jdbc.Driver}
+    url:      ${STG_DB_URL:jdbc:mysql://localhost:3307/gym_stg}
+    username: ${STG_DB_USERNAME:root}
+    password: ${STG_DB_PASSWORD:}
+
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true

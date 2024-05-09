@@ -1,0 +1,8 @@
+spring:
+  activemq:
+    broker-url: ${ACTIVEMQ_URL:tcp://localhost:61616}
+    user: ${ACTIVEMQ_USER:admin}
+    password: ${ACTIVEMQ_PASSWORD:admin}
+    queue:
+      trainer-training-queue: trainer.training.queue
+      dead-letter: dead
