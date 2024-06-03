@@ -16,6 +16,7 @@ import org.example.service.TrainingService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,26 +53,23 @@ public class TrainerController {
   @JsonView(Views.PublicTrainer.class)
   @PutMapping
   public ResponseEntity<TrainerDtoWithTrainees> updateTrainer(
+      @AuthenticationPrincipal UserDetails userDetails,
       @Valid @RequestBody TrainerDto dto
   ) {
+    if (!userDetails.getUsername().equals(dto.getUsername())) {
+      throw new AccessDeniedException("You are not allowed to update this trainer");
+    }
     return ResponseEntity.ok(service.update(dto));
-  }
-
-  @JsonView(Views.InList.class)
-  @GetMapping("/unassigned")
-  public ResponseEntity<List<TrainerDto>> getUnassignedTrainers(
-      @AuthenticationPrincipal UserDetails userDetails
-  ) {
-    return ResponseEntity.ok(service.getTrainersNotAssignedToTrainee(userDetails.getUsername()));
   }
 
   @GetMapping("/trainings")
   public ResponseEntity<List<TrainingDto>> getTrainerTrainings(
       @AuthenticationPrincipal UserDetails userDetails,
-      @RequestParam("trainers") List<String> trainers,
+      @RequestParam("trainees") List<String> trainees,
       @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date from,
       @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date to
   ) {
-    return ResponseEntity.ok(trainingService.getTrainerTrainingListByTraineeAndDateBetween(userDetails.getUsername(), trainers, from, to));
+    return ResponseEntity.ok(
+        trainingService.getTrainerTrainingListByTraineeAndDateBetween(userDetails.getUsername(), trainees, from, to));
   }
 }

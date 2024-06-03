@@ -1,0 +1,27 @@
+management:
+  health:
+    circuit-breakers:
+      enabled: true
+    rate-limiters:
+      enabled: true
+  endpoint:
+    health:
+      show-components: always
+      show-details: always
+  endpoints.web.exposure.include: 'prometheus, health'
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+spring:
+  datasource:
+    driver-class-name: ${DB_DRIVER_CLASS_NAME:com.mysql.cj.jdbc.Driver}
+    url: ${DB_URL:}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true

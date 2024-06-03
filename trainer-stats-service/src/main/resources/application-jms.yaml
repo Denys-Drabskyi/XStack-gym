@@ -6,3 +6,7 @@ spring:
     queue:
       trainer-training-queue: trainer.training.queue
       dead-letter: dead
+
+eureka:
+  client:
+    enabled: false

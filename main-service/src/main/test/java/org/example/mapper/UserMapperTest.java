@@ -1,6 +1,7 @@
 package org.example.mapper;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.UUID;
 import org.example.dto.UserDto;
@@ -48,11 +49,11 @@ class UserMapperTest {
   void testCase02() {
     mapper.updateEntityFromDto(dto, user);
 
-    assertEquals(dto.getFirstName(),  user.getFirstName());
-    assertEquals(dto.getLastName(),   user.getLastName());
-    assertEquals(dto.getPassword(),   user.getPassword());
+    assertEquals(dto.getFirstName(), user.getFirstName());
+    assertEquals(dto.getLastName(), user.getLastName());
+    assertEquals(dto.getPassword(), user.getPassword());
 
-    assertNotEquals(dto.getUsername(),   user.getUsername());
-    assertNotEquals(dto.isActive(),      user.isActive());
+    assertNotEquals(dto.getUsername(), user.getUsername());
+    assertNotEquals(dto.isActive(), user.isActive());
   }
 }

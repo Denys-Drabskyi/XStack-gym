@@ -2,10 +2,10 @@ package org.example.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.example.security.LogoutBlacklist;
 import org.example.dto.OnAuth;
 import org.example.dto.PasswordChangeDto;
 import org.example.dto.UserCredentialsDto;
+import org.example.security.LogoutBlacklist;
 import org.example.service.AuthService;
 import org.example.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,7 @@ public class UserController {
     return ResponseEntity.ok(authService.signIn(credentials));
   }
 
-  @GetMapping("/logout")
+  @PostMapping("/logout")
   public void logout(HttpServletRequest request) {
     String token = extractTokenFromRequest(request);
     blacklist.addToBlacklist(token);

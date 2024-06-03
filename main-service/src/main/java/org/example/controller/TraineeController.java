@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.OnAuth;
 import org.example.dto.TraineeDto;
 import org.example.dto.TraineeDtoWithTrainers;
 import org.example.dto.TrainerDto;
@@ -20,9 +19,9 @@ import org.example.service.TrainingService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,8 +58,12 @@ public class TraineeController {
   @JsonView(Views.PublicTrainee.class)
   @PutMapping
   public ResponseEntity<TraineeDtoWithTrainers> updateTrainee(
+      @AuthenticationPrincipal UserDetails userDetails,
       @Valid @RequestBody TraineeDto dto
   ) {
+    if (!userDetails.getUsername().equals(dto.getUsername())) {
+      throw new AccessDeniedException("You are not allowed to update this trainee");
+    }
     return ResponseEntity.ok(service.update(dto));
   }
 
@@ -89,14 +92,15 @@ public class TraineeController {
     return ResponseEntity.ok(trainerService.getTrainersNotAssignedToTrainee(userDetails.getUsername()));
   }
 
-//  @JsonView(Views.InList.class)
+  //  @JsonView(Views.InList.class)
   @GetMapping("/trainings")
   public ResponseEntity<List<TrainingDto>> getTraineeTrainings(
       @AuthenticationPrincipal UserDetails userDetails,
       @RequestParam("trainers") List<String> trainers,
-      @RequestParam("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date from,
+      @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date from,
       @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date to
-      ) {
-    return ResponseEntity.ok(trainingService.getTraineeTrainingListByTrainerAndDateBetween(userDetails.getUsername(), trainers, from, to));
+  ) {
+    return ResponseEntity.ok(
+        trainingService.getTraineeTrainingListByTrainerAndDateBetween(userDetails.getUsername(), trainers, from, to));
   }
 }

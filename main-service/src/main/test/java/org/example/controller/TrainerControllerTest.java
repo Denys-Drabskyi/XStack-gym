@@ -54,18 +54,10 @@ class TrainerControllerTest {
   @DisplayName("updateTrainee calls service")
   void testCase03() {
     when(service.update(any())).thenReturn(null);
-    controller.updateTrainer(dto);
+    dto.setUsername("test");
+    controller.updateTrainer(User.builder().username("test").build(), dto);
 
     verify(service, times(1)).update(any());
-  }
-
-  @Test
-  @DisplayName("getUnassignedTrainers calls service")
-  void testCase05() {
-    when(service.getTrainersNotAssignedToTrainee(any())).thenReturn(null);
-    controller.getUnassignedTrainers(User.builder().username("test").build());
-
-    verify(service, times(1)).getTrainersNotAssignedToTrainee(any());
   }
 
   @Test

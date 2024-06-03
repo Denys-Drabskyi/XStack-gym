@@ -1,6 +1,6 @@
 package org.example.mapper;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ class TrainingMapperTest {
 
   @Autowired
   private TrainingMapper trainingMapper;
-  private final LocalDate date = LocalDate.of(2000, 1 ,1);
+  private final LocalDate date = LocalDate.of(2000, 1, 1);
 
   private final Training training = Training.builder()
       .id(UUID.randomUUID())

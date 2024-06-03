@@ -59,7 +59,8 @@ class TraineeControllerTest {
   @DisplayName("updateTrainee calls service")
   void testCase03() {
     when(service.update(any())).thenReturn(null);
-    controller.updateTrainee(dto);
+    dto.setUsername("test");
+    controller.updateTrainee(User.builder().username("test").build(), dto);
 
     verify(service, times(1)).update(any());
   }

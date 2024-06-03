@@ -5,3 +5,7 @@ spring:
     password: ${ACTIVEMQ_PASSWORD:admin}
     queue:
       trainer-training-queue: trainer.training.queue
+
+eureka:
+  client:
+    enabled: false

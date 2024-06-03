@@ -1,36 +1,20 @@
 package org.example.service.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.UUID;
-import lombok.RequiredArgsConstructor;
-import org.example.dao.TraineeDao;
 import org.example.dto.TraineeDto;
 import org.example.dto.TraineeDtoWithTrainers;
-import org.example.dto.UserDto;
-import org.example.entity.Trainee;
-import org.example.entity.User;
-import org.example.mapper.TraineeMapper;
 import org.example.repository.TraineeRepository;
-import org.example.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class TraineeServiceImplTest {
 
   private TraineeDto TRAINEE_DTO;
@@ -53,6 +37,7 @@ class TraineeServiceImplTest {
 
   @Test
   @DisplayName("getWithTrainers() test")
+  @Transactional
   void testCase01() {
     TraineeDtoWithTrainers rez = service.getWithTrainers("trainee.trainee");
     assertEquals("trainee", rez.getFirstName());
@@ -61,6 +46,7 @@ class TraineeServiceImplTest {
 
   @Test
   @DisplayName("create() test")
+  @Transactional
   void testCase02() {
     TraineeDto rez = service.create(TRAINEE_DTO);
     assertEquals("trainee.trainee1", rez.getUsername());
@@ -69,6 +55,7 @@ class TraineeServiceImplTest {
 
   @Test
   @DisplayName("update() test")
+  @Transactional
   void testCase03() {
     TRAINEE_DTO.setUsername("trainee.trainee");
     TRAINEE_DTO.setFirstName("new");
@@ -83,6 +70,7 @@ class TraineeServiceImplTest {
 
   @Test
   @DisplayName("deleteByUsername() test")
+  @Transactional
   void testCase04() {
     TRAINEE_DTO.setUsername("trainee.trainee");
     assertEquals(1, repository.findAll().size());

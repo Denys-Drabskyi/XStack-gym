@@ -1,0 +1,43 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0.26
+    environment:
+      MYSQL_DATABASE: gym
+      MYSQL_ROOT_PASSWORD: test
+    networks:
+      - shared
+
+  activemq:
+    image: rmohr/activemq:latest
+    ports:
+      - 61616:61616
+      - 8161:8161
+    networks:
+      - shared
+
+  main-service:
+    image: main-service:latest
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_PROFILES_ACTIVE: integration,jms
+      DB_URL: jdbc:mysql://mysql:3306/gym
+      DB_USERNAME: root
+      DB_PASSWORD: test
+    #      ACTIVEMQ_URL: tcp://activemq:61616
+    networks:
+      - shared
+    depends_on:
+      - mysql
+      - activemq
+
+#  trainer-stats-service:
+#    image: trainer-stats-service:latest
+#    ports:
+#      - 8081:8081
+#    networks:
+#      - shared
+
+networks:
+  shared:
