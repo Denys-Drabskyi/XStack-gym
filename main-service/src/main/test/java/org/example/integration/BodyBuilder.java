@@ -9,7 +9,7 @@ import org.example.dto.TrainerDto;
 import org.example.dto.UpdateTrainersListDto;
 import org.example.dto.UserCredentialsDto;
 
-public class BodyBuilderHelper {
+public class BodyBuilder {
 
   public static Object objectOf(String type, DataTable dataTable) {
     switch (type) {

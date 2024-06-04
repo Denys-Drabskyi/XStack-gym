@@ -2,17 +2,19 @@ package com.example;
 
 import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 
+import org.junit.Before;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectPackages;
 import org.junit.platform.suite.api.Suite;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Suite
 @IncludeEngines("cucumber")
 @SelectPackages("com.example")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
-@Testcontainers
+//@Testcontainers
 public class RunCucumberTest {
 //  private static final Network SHARED_NETWORK = Network.newNetwork();
 //

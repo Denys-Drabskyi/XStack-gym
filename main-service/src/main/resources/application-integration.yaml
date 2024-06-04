@@ -15,6 +15,9 @@ management:
         enabled: true
 
 spring:
+  sql:
+    init:
+      mode: always
   datasource:
     driver-class-name: ${DB_DRIVER_CLASS_NAME:com.mysql.cj.jdbc.Driver}
     url: ${DB_URL:}
@@ -22,6 +25,7 @@ spring:
     password: ${DB_PASSWORD:}
 
   jpa:
-    hibernate.ddl-auto: update
-    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
     show-sql: true

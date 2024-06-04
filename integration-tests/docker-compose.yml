@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 services:
   mysql:
     image: mysql:8.0.26
@@ -7,6 +7,29 @@ services:
       MYSQL_ROOT_PASSWORD: test
     networks:
       - shared
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: test
+      MONGO_INITDB_ROOT_PASSWORD: test
+    networks:
+      - shared
+    restart: always
+    healthcheck:
+      test: [ "CMD","mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   activemq:
     image: rmohr/activemq:latest
@@ -15,35 +38,66 @@ services:
       - 8161:8161
     networks:
       - shared
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8161" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   main-service:
     image: main-service:latest
     ports:
-      - 8080:8080
+      - 8880:8080
     environment:
-      SPRING_PROFILES_ACTIVE: integration,jms
+      SPRING_PROFILES_ACTIVE: integration, jms
       DB_URL: jdbc:mysql://mysql:3306/gym
       DB_USERNAME: root
       DB_PASSWORD: test
-    # ACTIVEMQ_URL: tcp://activemq:61616
+      ACTIVEMQ_URL: tcp://activemq:61616
     networks:
       - shared
     depends_on:
-      - mysql
-      - activemq
+      mysql:
+        condition: service_healthy
+      activemq:
+        condition: service_healthy
     deploy:
       restart_policy:
         condition: on-failure
         delay: 3s
         max_attempts: 1
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8880/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-
-#  trainer-stats-service:
-#    image: trainer-stats-service:latest
-#    ports:
-#      - 8081:8081
-#    networks:
-#      - shared
+  trainer-stats-service:
+    image: trainer-stats-service:latest
+    ports:
+      - 8881:8081
+    environment:
+      SPRING_PROFILES_ACTIVE: mongo, jms, integration
+      MONGO_URI: mongodb://test:test@mongodb:27017/db?authSource=admin
+      MONGO_DB_NAME: db
+      ACTIVEMQ_URL: tcp://activemq:61616
+    networks:
+      - shared
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      activemq:
+        condition: service_healthy
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 1
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8881/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 networks:
   shared:

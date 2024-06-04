@@ -44,7 +44,7 @@ public class SecurityConfiguration {
           return corsConfiguration;
         }))
         .authorizeHttpRequests(request -> request
-            .requestMatchers(HttpMethod.GET, "/trainer/*").permitAll()
+            .requestMatchers(HttpMethod.GET, "/trainer/*", "/actuator/health").permitAll()
             .anyRequest().authenticated())
         .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
         .authenticationProvider(authenticationProvider(passwordEncoder, userDetailsService))

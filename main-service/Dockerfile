@@ -10,10 +10,6 @@ WORKDIR /app
 # Copy the JAR file into the Docker image
 # Make sure to build the JAR file before running Docker build
 COPY ./target/*.jar /app/*.jar
-
-# Expose the application port
-EXPOSE 8181
-
 # Start the application
 ENTRYPOINT ["java", "-jar", "/app/*.jar"]
 

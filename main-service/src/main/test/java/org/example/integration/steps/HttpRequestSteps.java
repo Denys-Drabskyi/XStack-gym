@@ -23,7 +23,7 @@ import org.example.dto.TrainerDto;
 import org.example.dto.TrainerDtoWithTrainees;
 import org.example.dto.TrainingDto;
 import org.example.entity.TrainingType;
-import org.example.integration.BodyBuilderHelper;
+import org.example.integration.BodyBuilder;
 import org.example.integration.StepsContainer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -76,7 +76,7 @@ public class HttpRequestSteps {
       method.header("Authorization", "Bearer " + getToken(token));
     }
     if (!objectName.isEmpty()) {
-      stepsContainer.body = BodyBuilderHelper.objectOf(objectName, dataTable);
+      stepsContainer.body = BodyBuilder.objectOf(objectName, dataTable);
       method.contentType(MediaType.APPLICATION_JSON)
           .content(objectMapper.writeValueAsString(stepsContainer.body));
     }
