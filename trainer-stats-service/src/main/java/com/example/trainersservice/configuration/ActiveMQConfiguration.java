@@ -59,9 +59,4 @@ public class ActiveMQConfiguration {
     template.setDeliveryPersistent(true);
     return template;
   }
-
-//  @Bean
-//  public Queue queue() {
-//    return new ActiveMQQueue("trainer.training.queue");
-//  }
 }

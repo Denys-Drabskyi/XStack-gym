@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: inMemory
+    active: inMemory, jms
 
 service:
   main: main-service

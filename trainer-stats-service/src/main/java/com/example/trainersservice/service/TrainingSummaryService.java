@@ -4,7 +4,7 @@ import org.example.dto.RegisterTrainingEventDto;
 import org.example.dto.TrainerStatisticsDto;
 
 
-public interface TrainerService {
+public interface TrainingSummaryService {
   void processTrainingEvent(RegisterTrainingEventDto dto);
 
   TrainerStatisticsDto getTrainerStatistic(String username);
