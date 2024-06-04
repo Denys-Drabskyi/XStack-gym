@@ -1,6 +1,6 @@
 Feature: An example
 
   Scenario: The example
-    Given an example scenario
-    When all step definitions are implemented
+    Given services are running
+    When training is created
     Then the scenario passes

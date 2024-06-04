@@ -25,12 +25,18 @@ services:
       DB_URL: jdbc:mysql://mysql:3306/gym
       DB_USERNAME: root
       DB_PASSWORD: test
-    #      ACTIVEMQ_URL: tcp://activemq:61616
+    # ACTIVEMQ_URL: tcp://activemq:61616
     networks:
       - shared
     depends_on:
       - mysql
       - activemq
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 1
+
 
 #  trainer-stats-service:
 #    image: trainer-stats-service:latest

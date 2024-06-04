@@ -9,7 +9,7 @@ for service in ${services[@]}; do
 
   cd $service
 
-  ./mvnw clean package
+  ./mvnw -f pom.xml clean package -DskipTests
 
   docker build -t $service .
 
@@ -18,8 +18,10 @@ done
 
 echo "Done processing all services."
 cd integration-tests
+echo "Starting services"
+docker-compose up -d
 echo "Running integration tests"
-#./mvnw test
-
+./mvnw test
+docker-compose down
 echo "Press any key to continue . . ."
 read
