@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: main-service
+
+logging:
+  file:
+    path: logs
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} transactionId=[%X{transactionId}]
+            - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} transactionId=[%X{transactionId}]
+            - %msg%n'
+server:
+  port: 8080
+
+token:
+  key: ${TOKEN_KEY:357638792F423F4428472B4B6250655368566D597133743677397A2443264629}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8094/eureka}
